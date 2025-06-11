@@ -106,6 +106,7 @@
             });
         });
 
+        
         // Profile Button
         const profileButton = document.getElementById('profile-button');
 
