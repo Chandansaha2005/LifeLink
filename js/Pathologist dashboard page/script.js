@@ -27,9 +27,98 @@
         const cancelButton = document.getElementById('cancel-button');
         const saveButton = document.getElementById('save-button');
         const formActions = document.getElementById('form-actions');
-        const formInputs = document.querySelectorAll('#pathologist-form input, #pathologist-form select');
+        const formInputs = document.querySelectorAll('#doctor-form input, #doctor-form select');
         const successCheckmark = document.getElementById('success-checkmark');
 
         // Store original values
         const originalValues = {};
-        form < script > (function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'94df525a32d193ad',t:'MTc0OTYyNjE3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();
+        formInputs.forEach(input => {
+            originalValues[input.id] = input.value;
+        });
+
+        // Enable editing
+        editButton.addEventListener('click', function () {
+            formInputs.forEach(input => {
+                input.disabled = false;
+            });
+            formActions.classList.remove('hidden');
+        });
+
+        // Cancel editing
+        cancelButton.addEventListener('click', function () {
+            formInputs.forEach(input => {
+                input.value = originalValues[input.id];
+                input.disabled = true;
+            });
+            formActions.classList.add('hidden');
+        });
+
+        // Save changes
+        saveButton.addEventListener('click', function () {
+            // Basic validation
+            let isValid = true;
+            formInputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    isValid = false;
+                    input.classList.add('border-red-500');
+                } else {
+                    input.classList.remove('border-red-500');
+                }
+            });
+
+            if (!isValid) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            // Update original values
+            formInputs.forEach(input => {
+                originalValues[input.id] = input.value;
+                input.disabled = true;
+            });
+
+            // Hide form actions
+            formActions.classList.add('hidden');
+
+            // Show success animation
+            successCheckmark.classList.add('show');
+
+            // Hide success animation after delay
+            setTimeout(() => {
+                successCheckmark.classList.remove('show');
+            }, 1500);
+        });
+
+        // Bottom Navigation
+        const navItems = document.querySelectorAll('.nav-item');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Remove active class from all items
+                navItems.forEach(navItem => {
+                    navItem.classList.remove('active');
+                });
+
+                // Add active class to clicked item
+                this.classList.add('active');
+            });
+        });
+
+        // Profile Button
+        const profileButton = document.getElementById('profile-button');
+
+        profileButton.addEventListener('click', function () {
+            alert('Profile settings would open here.');
+        });
+
+        // Patient Action Buttons
+        const viewRecordButtons = document.querySelectorAll('.action-button');
+
+        viewRecordButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const action = this.textContent.trim();
+                alert(`${action} functionality would open here.`);
+            });
+        });
