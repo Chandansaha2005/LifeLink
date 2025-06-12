@@ -119,3 +119,4 @@
         addReportButton.addEventListener('click', function () {
             alert('Report upload functionality would open here.');
         });
+        
