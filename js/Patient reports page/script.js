@@ -58,7 +58,7 @@ document.getElementById('close-modal').addEventListener('click', function () {
 
 // Add New Record button functionality
 document.getElementById('add-record-btn').addEventListener('click', function () {
-    document.getElementById('add-record-modal').style.display = 'flex';
+    window.location.href = 'addreport.html';
 });
 
 // Close add record modal
