@@ -94,7 +94,6 @@
 
         navItems.forEach(item => {
             item.addEventListener('click', function (e) {
-                e.preventDefault();
 
                 // Remove active class from all items
                 navItems.forEach(navItem => {
