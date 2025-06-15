@@ -112,10 +112,5 @@
             alert('Profile settings would open here.');
         });
 
-        // Add Report Button
-        const addReportButton = document.querySelector('.add-report-button');
-
-        addReportButton.addEventListener('click', function () {
-            alert('Report upload functionality would open here.');
-        });
+        
         
