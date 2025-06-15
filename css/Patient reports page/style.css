@@ -119,27 +119,6 @@ body {
     }
 }
 
-@keyframes checkmark {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-
-    50% {
-        transform: scale(1.2);
-        opacity: 1;
-    }
-
-    70% {
-        transform: scale(0.9);
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
 .animate-fadeIn {
     animation: fadeIn 0.8s ease-out forwards;
 }
@@ -170,10 +149,6 @@ body {
 
 .animate-shimmer {
     animation: shimmer 2s ease-in-out infinite;
-}
-
-.animate-checkmark {
-    animation: checkmark 0.8s ease-out forwards;
 }
 
 .stagger-1 {
@@ -431,131 +406,339 @@ input:checked+.slider:after {
     transition: all 0.3s ease;
 }
 
-/* Profile Button */
-.profile-button {
-    position: relative;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.profile-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-.profile-button:active {
-    transform: scale(0.95);
-}
-
-/* Form Fields */
-.form-field {
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.form-field:focus {
-    border-color: #007BFF;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-}
-
-.dark .form-field:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-}
-
-/* Success Animation */
-.success-checkmark {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80px;
-    height: 80px;
+/* Chart Tooltip */
+.chart-tooltip {
+    position: absolute;
     background: rgba(255, 255, 255, 0.95);
-    border-radius: 50%;
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    z-index: 10;
+    font-size: 14px;
+    color: #333;
+    transform: translate(-50%, -100%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.dark .chart-tooltip {
+    background: rgba(31, 41, 55, 0.95);
+    color: #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.chart-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgba(255, 255, 255, 0.95);
+}
+
+.dark .chart-tooltip::after {
+    border-top-color: rgba(31, 41, 55, 0.95);
+}
+
+.chart-tooltip.show {
+    opacity: 1;
+}
+
+/* Graph Container */
+.graph-container {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+/* Accordion */
+.accordion-header {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+
+.accordion-content.open {
+    max-height: 500px;
+}
+
+.accordion-icon {
+    transition: transform 0.3s ease;
+}
+
+.accordion-header.open .accordion-icon {
+    transform: rotate(180deg);
+}
+
+/* Data Source Tags */
+.data-source-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    margin-right: 8px;
+    transition: all 0.3s ease;
+}
+
+.tag-me {
+    background-color: rgba(0, 123, 255, 0.1);
+    color: #007BFF;
+}
+
+.dark .tag-me {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #3B82F6;
+}
+
+.tag-pathologist {
+    background-color: rgba(32, 201, 151, 0.1);
+    color: #20C997;
+}
+
+.dark .tag-pathologist {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #10B981;
+}
+
+/* Report Modal */
+.report-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     z-index: 100;
     opacity: 0;
     pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
-.dark .success-checkmark {
+.report-modal.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.report-modal-content {
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.dark .report-modal-content {
     background: rgba(31, 41, 55, 0.95);
 }
 
-.success-checkmark.show {
-    animation: checkmark-appear 1.5s ease forwards;
+.report-modal.open .report-modal-content {
+    transform: scale(1);
 }
 
-@keyframes checkmark-appear {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.5);
-    }
-
-    10% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.1);
-    }
-
-    20% {
-        transform: translate(-50%, -50%) scale(0.9);
-    }
-
-    30% {
-        transform: translate(-50%, -50%) scale(1);
-    }
-
-    70% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.5);
-    }
+/* Tabs */
+.tab-container {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
 }
 
-/* Notification Bell Animation */
-.notification-bell {
-    position: relative;
+.tab-container::-webkit-scrollbar {
+    display: none;
 }
 
-.notification-bell .bell-icon {
+.tab {
+    flex: 0 0 auto;
+    padding: 8px 16px;
+    margin-right: 8px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    scroll-snap-align: start;
+}
+
+.tab.active {
+    background-color: #007BFF;
+    color: white;
+}
+
+.dark .tab.active {
+    background-color: #3B82F6;
+}
+
+/* Carousel */
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-item {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    padding: 0 4px;
+}
+
+/* Carousel Indicators */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.carousel-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    margin: 0 4px;
     transition: all 0.3s ease;
 }
 
-.notification-bell:hover .bell-icon {
-    transform: rotate(10deg);
+.dark .carousel-indicator {
+    background-color: #4b5563;
 }
 
-/* Shimmer Effect */
+.carousel-indicator.active {
+    width: 24px;
+    border-radius: 4px;
+    background-color: #007BFF;
+}
+
+.dark .carousel-indicator.active {
+    background-color: #3B82F6;
+}
+
+/* View Report Button */
+.view-report-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background-color: rgba(0, 123, 255, 0.1);
+    color: #007BFF;
+}
+
+.dark .view-report-btn {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #3B82F6;
+}
+
+.view-report-btn:hover {
+    background-color: rgba(0, 123, 255, 0.2);
+}
+
+.dark .view-report-btn:hover {
+    background-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Data Point */
+.data-point {
+    position: relative;
+    cursor: pointer;
+}
+
+.data-point::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: #007BFF;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dark .data-point::after {
+    background-color: #3B82F6;
+}
+
+.data-point:hover::after {
+    opacity: 1;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.dark .scroll-indicator {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Shimmer Effect for Loading */
 .shimmer {
-    background: linear-gradient(90deg,
+    background: linear-gradient(to right,
             rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.5) 50%,
             rgba(255, 255, 255, 0) 100%);
     background-size: 200% 100%;
-    animation: shimmer-animation 2s infinite;
+    animation: shimmer 1.5s infinite;
 }
 
 .dark .shimmer {
-    background: linear-gradient(90deg,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.1) 50%,
-            rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(to right,
+            rgba(31, 41, 55, 0) 0%,
+            rgba(31, 41, 55, 0.5) 50%,
+            rgba(31, 41, 55, 0) 100%);
     background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
 }
 
-@keyframes shimmer-animation {
+@keyframes shimmer {
     0% {
         background-position: -200% 0;
     }
@@ -563,113 +746,4 @@ input:checked+.slider:after {
     100% {
         background-position: 200% 0;
     }
-}
-
-/* Patient Details Card */
-.patient-card {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.patient-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(to bottom right,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.1) 50%,
-            rgba(255, 255, 255, 0) 100%);
-    transform: rotate(45deg);
-    transition: all 0.3s ease;
-}
-
-.patient-card:hover::before {
-    animation: card-shine 1.5s forwards;
-}
-
-@keyframes card-shine {
-    0% {
-        left: -50%;
-        top: -50%;
-    }
-
-    100% {
-        left: 150%;
-        top: 150%;
-    }
-}
-
-/* Edit Button Animation */
-.edit-button {
-    transition: all 0.3s ease;
-}
-
-.edit-button:hover {
-    transform: rotate(15deg);
-}
-
-/* Form Input Animation */
-.form-input {
-    transition: all 0.3s ease;
-}
-
-.form-input:focus {
-    transform: translateY(-2px);
-}
-
-/* Add Report Button */
-.add-report-button {
-    transition: all 0.3s ease;
-    overflow: hidden;
-    position: relative;
-}
-
-.add-report-button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to right,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.3) 50%,
-            rgba(255, 255, 255, 0) 100%);
-    transform: skewX(-25deg);
-}
-
-.add-report-button:hover::after {
-    animation: button-shine 1s forwards;
-}
-
-@keyframes button-shine {
-    0% {
-        left: -100%;
-    }
-
-    100% {
-        left: 200%;
-    }
-}
-
-/* Placeholder Shimmer */
-.placeholder-shimmer {
-    background: linear-gradient(90deg,
-            rgba(0, 0, 0, 0.06) 0%,
-            rgba(0, 0, 0, 0.12) 50%,
-            rgba(0, 0, 0, 0.06) 100%);
-    background-size: 200% 100%;
-    animation: shimmer-animation 2s infinite;
-}
-
-.dark .placeholder-shimmer {
-    background: linear-gradient(90deg,
-            rgba(255, 255, 255, 0.06) 0%,
-            rgba(255, 255, 255, 0.12) 50%,
-            rgba(255, 255, 255, 0.06) 100%);
-    background-size: 200% 100%;
 }
