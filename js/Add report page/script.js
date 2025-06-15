@@ -159,6 +159,7 @@ function updateProgressStep(step) {
     }
 }
 
+
 // Function to navigate between sections
 function navigateToSection(sectionNumber) {
     // Hide all sections
@@ -338,7 +339,7 @@ removeFile.addEventListener('click', function () {
 const normalizeBtn = document.getElementById('normalize-button');
 
 normalizeBtn.addEventListener('click', (e) => {
-    e.preventDefault(); // prevent form submission if it's in a form
+    e.preventDefault();
 
     healthData.reportType = reportTypeSelect.value;
     healthData.testValue = parseFloat(document.getElementById('test-value').value);
@@ -357,6 +358,10 @@ normalizeBtn.addEventListener('click', (e) => {
         healthData.maxValue
     ).toFixed(2);
 
+    // ✅ Fill readonly fields
+    document.getElementById('report-type-display').value = testRanges[healthData.reportType]?.name || healthData.reportType;
+    document.getElementById('report-date').value = formatDate(healthData.testDate);
+
     generateSampleData(
         healthData.reportType,
         healthData.testValue,
@@ -366,5 +371,11 @@ normalizeBtn.addEventListener('click', (e) => {
     );
 
     renderChart();
-    navigateToSection(2); // Show graph section
+    navigateToSection(2); // Go to graph section
+});
+const uploadReportBtn = document.getElementById('upload-report-button');
+
+uploadReportBtn.addEventListener('click', (e) => {
+    e.preventDefault(); // Optional: prevents form submission if it's in a form
+    navigateToSection(4); // Show the success section
 });

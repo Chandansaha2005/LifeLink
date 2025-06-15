@@ -17,31 +17,7 @@
 
 <body
     class="font-poppins bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300 min-h-screen pb-20">
-    <!-- Status Bar (Mobile) -->
-    <div class="status-bar bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition-colors duration-300">
-        <div>9:41</div>
-        <div class="flex space-x-2">
-            <span>
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z">
-                    </path>
-                </svg>
-            </span>
-            <span>
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17 5h-2V3h-4v2H9v2h8V5zm-8 8h2v-2h4v2h2v2H9v-2zm8 4h-2v2h-4v-2H9v-2h8v2z"></path>
-                </svg>
-            </span>
-            <span>
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                        d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4zM13 18h-2v-2h2v2zm0-4h-2V9h2v5z">
-                    </path>
-                </svg>
-            </span>
-        </div>
-    </div>
+
 
     <!-- Top Section -->
     <header class="sticky top-0 w-full bg-white dark:bg-gray-800 shadow-md z-40 transition-colors duration-300">
@@ -273,7 +249,7 @@
 
                 <div class="p-4">
                     <div class="text-center mb-4">
-                        <p class="text-gray-600 dark:text-gray-400">Would you like to include this in a health report?
+                        <p class="text-gray-600 dark:text-gray-400">Would you like to include the test report?
                         </p>
                     </div>
 
@@ -281,15 +257,15 @@
                         <!-- Patient Name -->
                         <div class="form-group">
                             <label for="patient-name"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-300">Patient
-                                Name</label>
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-300">Uploader
+                                Role</label>
                             <div class="custom-select">
                                 <select id="patient-name" name="patient-name"
                                     class="form-field w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-300">
-                                    <option value="self" selected="">Self</option>
-                                    <option value="john-doe">John Doe</option>
-                                    <option value="jane-smith">Jane Smith</option>
-                                    <option value="add-new">+ Add New Patient</option>
+                                    <option value="self" selected="">Patient</option>
+                                    <option value="john-doe">Subhojyoti Maity (Past Pathologist)</option>
+                                    <option value="jane-smith">Shriza Baidya (Past Pathologist)</option>
+                                    <option value="add-new">+ Add New Pathologist</option>
                                 </select>
                             </div>
                         </div>
