@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" class=""><head>
+<html lang="en" class="light scroll-smooth">
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LifeLink - Health Analysis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <title>LifeLink - Health Trends</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -13,12 +16,20 @@
                 extend: {
                     colors: {
                         primary: {
-                            DEFAULT: '#007BFF',
+                            light: '#007BFF',
                             dark: '#3b82f6'
                         },
                         secondary: {
-                            DEFAULT: '#20C997',
+                            light: '#20C997',
                             dark: '#10b981'
+                        },
+                        background: {
+                            light: '#f8fafc',
+                            dark: '#111827'
+                        },
+                        card: {
+                            light: '#ffffff',
+                            dark: '#1f2937'
                         }
                     },
                     fontFamily: {
@@ -29,85 +40,210 @@
         }
     </script>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Poppins', sans-serif;
             -webkit-tap-highlight-color: transparent;
             overscroll-behavior-y: contain;
         }
-        
-        /* Animations */
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
-        
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(2.4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.5;
+            }
+        }
+
         .animate-fadeIn {
-            animation: fadeIn 0.5s ease forwards;
+            animation: fadeIn 0.8s ease-out forwards;
         }
-        
+
+        .animate-slideIn {
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        .animate-slideInRight {
+            animation: slideInRight 0.8s ease-out forwards;
+        }
+
         .animate-pulse-slow {
-            animation: pulse 2s infinite;
+            animation: pulse 3s infinite;
         }
-        
-        .stagger-1 { animation-delay: 0.1s; }
-        .stagger-2 { animation-delay: 0.2s; }
-        .stagger-3 { animation-delay: 0.3s; }
-        .stagger-4 { animation-delay: 0.4s; }
-        .stagger-5 { animation-delay: 0.5s; }
-        
-        /* Glassmorphism */
-        .glassmorphism {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
         }
-        
-        .dark .glassmorphism {
-            background: rgba(17, 25, 40, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        .animate-spin-slow {
+            animation: spin 8s linear infinite;
         }
-        
-        /* Card hover effect */
+
+        .animate-bounce-subtle {
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .animate-shimmer {
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        .stagger-1 {
+            animation-delay: 0.1s;
+        }
+
+        .stagger-2 {
+            animation-delay: 0.2s;
+        }
+
+        .stagger-3 {
+            animation-delay: 0.3s;
+        }
+
+        .stagger-4 {
+            animation-delay: 0.4s;
+        }
+
+        .stagger-5 {
+            animation-delay: 0.5s;
+        }
+
+        .hero-gradient-light {
+            background: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(32, 201, 151, 0.8)),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/svg%3E");
+        }
+
+        .hero-gradient-dark {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(16, 185, 129, 0.8)),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%23ffffff' fill-opacity='0.05' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z'%3E%3C/path%3E%3C/svg%3E");
+        }
+
         .card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
         .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
         }
-        
-        .dark .card:hover {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Bottom Navigation */
-        .bottom-nav {
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        
+
         /* Theme switch */
         .theme-switch {
             position: relative;
             width: 60px;
             height: 30px;
         }
-        
+
         .theme-switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
-        
+
         .slider {
             position: absolute;
             cursor: pointer;
@@ -119,7 +255,7 @@
             transition: .4s;
             border-radius: 34px;
         }
-        
+
         .slider:before {
             position: absolute;
             content: "";
@@ -131,15 +267,15 @@
             transition: .4s;
             border-radius: 50%;
         }
-        
-        input:checked + .slider {
+
+        input:checked+.slider {
             background-color: #3b82f6;
         }
-        
-        input:checked + .slider:before {
+
+        input:checked+.slider:before {
             transform: translateX(30px);
         }
-        
+
         .slider:after {
             content: '☀️';
             position: absolute;
@@ -147,1122 +283,2215 @@
             top: 5px;
             font-size: 12px;
         }
-        
-        input:checked + .slider:after {
+
+        input:checked+.slider:after {
             content: '🌙';
             left: auto;
             right: 8px;
         }
-        
-        /* Button ripple effect */
-        .ripple {
+
+        /* App-like buttons */
+        .app-button {
+            transition: all 0.2s ease;
             position: relative;
             overflow: hidden;
         }
-        
-        .ripple:after {
-            content: "";
-            display: block;
+
+        .app-button:active {
+            transform: scale(0.97);
+        }
+
+        .app-button::after {
+            content: '';
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
-            background-repeat: no-repeat;
-            background-position: 50%;
-            transform: scale(10, 10);
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.4);
             opacity: 0;
-            transition: transform .5s, opacity 1s;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%, -50%);
+            transform-origin: 50% 50%;
         }
-        
-        .ripple:active:after {
-            transform: scale(0, 0);
-            opacity: .3;
-            transition: 0s;
+
+        .app-button:focus:not(:active)::after {
+            animation: ripple-effect 0.6s ease-out;
         }
-        
-        /* Tab styles */
-        .tab-active {
-            color: #007BFF;
-            border-bottom: 2px solid #007BFF;
+
+        @keyframes ripple-effect {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+
+            20% {
+                transform: scale(25, 25);
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
         }
-        
-        .dark .tab-active {
-            color: #3b82f6;
-            border-bottom: 2px solid #3b82f6;
+
+        /* Status bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 16px;
+            font-size: 12px;
         }
-        
-        /* Health metric card */
-        .metric-card {
+
+        /* Glassmorphism */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .dark .glassmorphism {
+            background: rgba(17, 25, 40, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 50;
             transition: all 0.3s ease;
         }
-        
-        .metric-card:active {
-            transform: scale(0.98);
+
+        .dark .bottom-nav {
+            background: rgba(31, 41, 55, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
-        /* Progress ring */
-        .progress-ring {
-            transform: rotate(-90deg);
-        }
-        
-        .progress-ring__circle {
-            stroke-dasharray: 251.2;
-            stroke-dashoffset: 251.2;
-            transition: stroke-dashoffset 1s ease;
-        }
-        
-        /* Trend indicator */
-        .trend-up {
-            color: #10b981;
-        }
-        
-        .trend-down {
-            color: #ef4444;
-        }
-        
-        .trend-neutral {
-            color: #f59e0b;
-        }
-        
-        /* Tooltip */
-        .tooltip {
+
+        .nav-item {
             position: relative;
-            display: inline-block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 10px 0;
+            color: #6B7280;
+            transition: all 0.3s ease;
         }
-        
-        .tooltip .tooltip-text {
-            visibility: hidden;
-            width: 120px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
+
+        .dark .nav-item {
+            color: #9CA3AF;
+        }
+
+        .nav-item.active {
+            color: #007BFF;
+        }
+
+        .dark .nav-item.active {
+            color: #3B82F6;
+        }
+
+        .nav-item::after {
+            content: '';
             position: absolute;
-            z-index: 1;
-            bottom: 125%;
+            bottom: 0;
             left: 50%;
-            margin-left: -60px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 12px;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: #007BFF;
+            transition: all 0.3s ease;
+            border-radius: 3px 3px 0 0;
         }
-        
-        .tooltip:hover .tooltip-text {
-            visibility: visible;
+
+        .dark .nav-item::after {
+            background: #3B82F6;
+        }
+
+        .nav-item.active::after {
+            width: 30px;
+        }
+
+        .nav-item:hover {
+            color: #007BFF;
+        }
+
+        .dark .nav-item:hover {
+            color: #3B82F6;
+        }
+
+        .nav-icon {
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover .nav-icon {
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active .nav-icon {
+            transform: translateY(-4px);
+        }
+
+        .nav-label {
+            font-size: 12px;
+            margin-top: 4px;
+            transition: all 0.3s ease;
+        }
+
+        /* Chart Tooltip */
+        .chart-tooltip {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 8px 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            z-index: 10;
+            font-size: 14px;
+            color: #333;
+            transform: translate(-50%, -100%);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .dark .chart-tooltip {
+            background: rgba(31, 41, 55, 0.95);
+            color: #e5e7eb;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid rgba(255, 255, 255, 0.95);
+        }
+
+        .dark .chart-tooltip::after {
+            border-top-color: rgba(31, 41, 55, 0.95);
+        }
+
+        .chart-tooltip.show {
             opacity: 1;
         }
-        
-        /* Date range selector */
-        .date-range-selector {
-            display: flex;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 4px;
+
+        /* Graph Container */
+        .graph-container {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: all 0.3s ease;
         }
-        
-        .dark .date-range-selector {
-            background-color: rgba(0, 0, 0, 0.2);
-        }
-        
-        .date-range-option {
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-size: 12px;
+
+        /* Accordion */
+        .accordion-header {
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
-        .date-range-option.active {
-            background-color: white;
-            color: #007BFF;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
         }
-        
-        .dark .date-range-option.active {
-            background-color: #374151;
-            color: #3b82f6;
+
+        .accordion-content.open {
+            max-height: 500px;
         }
-        
-        /* Insights card */
-        .insights-card {
-            border-left: 4px solid transparent;
+
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-header.open .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Data Source Tags */
+        .data-source-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            margin-right: 8px;
             transition: all 0.3s ease;
         }
-        
-        .insights-card.positive {
-            border-left-color: #10b981;
+
+        .tag-me {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007BFF;
         }
-        
-        .insights-card.warning {
-            border-left-color: #f59e0b;
+
+        .dark .tag-me {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #3B82F6;
         }
-        
-        .insights-card.negative {
-            border-left-color: #ef4444;
+
+        .tag-pathologist {
+            background-color: rgba(32, 201, 151, 0.1);
+            color: #20C997;
         }
-        
-        .insights-card.info {
-            border-left-color: #3b82f6;
+
+        .dark .tag-pathologist {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        /* Report Modal */
+        .report-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .report-modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .report-modal-content {
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .dark .report-modal-content {
+            background: rgba(31, 41, 55, 0.95);
+        }
+
+        .report-modal.open .report-modal-content {
+            transform: scale(1);
+        }
+
+        /* Tabs */
+        .tab-container {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 8px;
+        }
+
+        .tab-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            flex: 0 0 auto;
+            padding: 8px 16px;
+            margin-right: 8px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            scroll-snap-align: start;
+        }
+
+        .tab.active {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .dark .tab.active {
+            background-color: #3B82F6;
+        }
+
+        /* Carousel */
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+            padding: 0 4px;
+        }
+
+        /* Carousel Indicators */
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .carousel-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #d1d5db;
+            margin: 0 4px;
+            transition: all 0.3s ease;
+        }
+
+        .dark .carousel-indicator {
+            background-color: #4b5563;
+        }
+
+        .carousel-indicator.active {
+            width: 24px;
+            border-radius: 4px;
+            background-color: #007BFF;
+        }
+
+        .dark .carousel-indicator.active {
+            background-color: #3B82F6;
+        }
+
+        /* View Report Button */
+        .view-report-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007BFF;
+        }
+
+        .dark .view-report-btn {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #3B82F6;
+        }
+
+        .view-report-btn:hover {
+            background-color: rgba(0, 123, 255, 0.2);
+        }
+
+        .dark .view-report-btn:hover {
+            background-color: rgba(59, 130, 246, 0.3);
+        }
+
+        /* Data Point */
+        .data-point {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .data-point::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            background-color: #007BFF;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .dark .data-point::after {
+            background-color: #3B82F6;
+        }
+
+        .data-point:hover::after {
+            opacity: 1;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            border-radius: 2px;
+            background-color: rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .dark .scroll-indicator {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Shimmer Effect for Loading */
+        .shimmer {
+            background: linear-gradient(to right,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.5) 50%,
+                    rgba(255, 255, 255, 0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        .dark .shimmer {
+            background: linear-gradient(to right,
+                    rgba(31, 41, 55, 0) 0%,
+                    rgba(31, 41, 55, 0.5) 50%,
+                    rgba(31, 41, 55, 0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
         }
     </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.fixed{position:fixed}.sticky{position:sticky}.bottom-0{bottom:0px}.left-0{left:0px}.right-0{right:0px}.top-0{top:0px}.z-40{z-index:40}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-20{margin-bottom:5rem}.mb-4{margin-bottom:1rem}.ml-1{margin-left:0.25rem}.ml-2{margin-left:0.5rem}.mr-1{margin-right:0.25rem}.mr-2{margin-right:0.5rem}.mr-3{margin-right:0.75rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.flex{display:flex}.h-10{height:2.5rem}.h-24{height:6rem}.h-3{height:0.75rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-64{height:16rem}.h-8{height:2rem}.min-h-screen{min-height:100vh}.w-10{width:2.5rem}.w-3{width:0.75rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-8{width:2rem}.w-full{width:100%}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.justify-around{justify-content:space-around}.space-x-2 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.5rem * var(--tw-space-x-reverse));margin-left:calc(0.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-4 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1rem * var(--tw-space-x-reverse));margin-left:calc(1rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.bg-blue-100{--tw-bg-opacity:1;background-color:rgb(219 234 254 / var(--tw-bg-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-blue-500{--tw-bg-opacity:1;background-color:rgb(59 130 246 / var(--tw-bg-opacity, 1))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.bg-green-100{--tw-bg-opacity:1;background-color:rgb(220 252 231 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94 / var(--tw-bg-opacity, 1))}.bg-indigo-100{--tw-bg-opacity:1;background-color:rgb(224 231 255 / var(--tw-bg-opacity, 1))}.bg-pink-100{--tw-bg-opacity:1;background-color:rgb(252 231 243 / var(--tw-bg-opacity, 1))}.bg-primary{--tw-bg-opacity:1;background-color:rgb(0 123 255 / var(--tw-bg-opacity, 1))}.bg-purple-100{--tw-bg-opacity:1;background-color:rgb(243 232 255 / var(--tw-bg-opacity, 1))}.bg-purple-50{--tw-bg-opacity:1;background-color:rgb(250 245 255 / var(--tw-bg-opacity, 1))}.bg-red-100{--tw-bg-opacity:1;background-color:rgb(254 226 226 / var(--tw-bg-opacity, 1))}.bg-red-500{--tw-bg-opacity:1;background-color:rgb(239 68 68 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-yellow-100{--tw-bg-opacity:1;background-color:rgb(254 249 195 / var(--tw-bg-opacity, 1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.from-blue-50{--tw-gradient-from:#eff6ff var(--tw-gradient-from-position);--tw-gradient-to:rgb(239 246 255 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-teal-50{--tw-gradient-to:#f0fdfa var(--tw-gradient-to-position)}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-20{padding-bottom:5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-medium{font-weight:500}.font-semibold{font-weight:600}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-green-600{--tw-text-opacity:1;color:rgb(22 163 74 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-primary{--tw-text-opacity:1;color:rgb(0 123 255 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-red-800{--tw-text-opacity:1;color:rgb(153 27 27 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-yellow-600{--tw-text-opacity:1;color:rgb(202 138 4 / var(--tw-text-opacity, 1))}.text-yellow-800{--tw-text-opacity:1;color:rgb(133 77 14 / var(--tw-text-opacity, 1))}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.dark\:bg-blue-800:is(.dark *){--tw-bg-opacity:1;background-color:rgb(30 64 175 / var(--tw-bg-opacity, 1))}.dark\:bg-blue-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(30 58 138 / var(--tw-bg-opacity, 1))}.dark\:bg-blue-900\/20:is(.dark *){background-color:rgb(30 58 138 / 0.2)}.dark\:bg-blue-900\/30:is(.dark *){background-color:rgb(30 58 138 / 0.3)}.dark\:bg-gray-700:is(.dark *){--tw-bg-opacity:1;background-color:rgb(55 65 81 / var(--tw-bg-opacity, 1))}.dark\:bg-gray-800:is(.dark *){--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.dark\:bg-green-800:is(.dark *){--tw-bg-opacity:1;background-color:rgb(22 101 52 / var(--tw-bg-opacity, 1))}.dark\:bg-green-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(20 83 45 / var(--tw-bg-opacity, 1))}.dark\:bg-green-900\/20:is(.dark *){background-color:rgb(20 83 45 / 0.2)}.dark\:bg-indigo-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(49 46 129 / var(--tw-bg-opacity, 1))}.dark\:bg-pink-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(131 24 67 / var(--tw-bg-opacity, 1))}.dark\:bg-primary-dark:is(.dark *){--tw-bg-opacity:1;background-color:rgb(59 130 246 / var(--tw-bg-opacity, 1))}.dark\:bg-purple-800:is(.dark *){--tw-bg-opacity:1;background-color:rgb(107 33 168 / var(--tw-bg-opacity, 1))}.dark\:bg-purple-900\/20:is(.dark *){background-color:rgb(88 28 135 / 0.2)}.dark\:bg-red-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(127 29 29 / var(--tw-bg-opacity, 1))}.dark\:bg-yellow-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(113 63 18 / var(--tw-bg-opacity, 1))}.dark\:from-gray-900:is(.dark *){--tw-gradient-from:#111827 var(--tw-gradient-from-position);--tw-gradient-to:rgb(17 24 39 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.dark\:to-gray-800:is(.dark *){--tw-gradient-to:#1f2937 var(--tw-gradient-to-position)}.dark\:text-blue-300:is(.dark *){--tw-text-opacity:1;color:rgb(147 197 253 / var(--tw-text-opacity, 1))}.dark\:text-blue-400:is(.dark *){--tw-text-opacity:1;color:rgb(96 165 250 / var(--tw-text-opacity, 1))}.dark\:text-gray-300:is(.dark *){--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.dark\:text-gray-400:is(.dark *){--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.dark\:text-green-200:is(.dark *){--tw-text-opacity:1;color:rgb(187 247 208 / var(--tw-text-opacity, 1))}.dark\:text-green-400:is(.dark *){--tw-text-opacity:1;color:rgb(74 222 128 / var(--tw-text-opacity, 1))}.dark\:text-primary-dark:is(.dark *){--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.dark\:text-red-200:is(.dark *){--tw-text-opacity:1;color:rgb(254 202 202 / var(--tw-text-opacity, 1))}.dark\:text-red-400:is(.dark *){--tw-text-opacity:1;color:rgb(248 113 113 / var(--tw-text-opacity, 1))}.dark\:text-white:is(.dark *){--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.dark\:text-yellow-200:is(.dark *){--tw-text-opacity:1;color:rgb(254 240 138 / var(--tw-text-opacity, 1))}.dark\:text-yellow-400:is(.dark *){--tw-text-opacity:1;color:rgb(250 204 21 / var(--tw-text-opacity, 1))}</style></head>
-<body class="bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300 min-h-screen pb-20">
-    
+    <style>
+        *,
+        ::before,
+        ::after {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style:
+        }
 
-    <!-- Header -->
+        ::backdrop {
+            --tw-border-spacing-x: 0;
+            --tw-border-spacing-y: 0;
+            --tw-translate-x: 0;
+            --tw-translate-y: 0;
+            --tw-rotate: 0;
+            --tw-skew-x: 0;
+            --tw-skew-y: 0;
+            --tw-scale-x: 1;
+            --tw-scale-y: 1;
+            --tw-pan-x: ;
+            --tw-pan-y: ;
+            --tw-pinch-zoom: ;
+            --tw-scroll-snap-strictness: proximity;
+            --tw-gradient-from-position: ;
+            --tw-gradient-via-position: ;
+            --tw-gradient-to-position: ;
+            --tw-ordinal: ;
+            --tw-slashed-zero: ;
+            --tw-numeric-figure: ;
+            --tw-numeric-spacing: ;
+            --tw-numeric-fraction: ;
+            --tw-ring-inset: ;
+            --tw-ring-offset-width: 0px;
+            --tw-ring-offset-color: #fff;
+            --tw-ring-color: rgb(59 130 246 / 0.5);
+            --tw-ring-offset-shadow: 0 0 #0000;
+            --tw-ring-shadow: 0 0 #0000;
+            --tw-shadow: 0 0 #0000;
+            --tw-shadow-colored: 0 0 #0000;
+            --tw-blur: ;
+            --tw-brightness: ;
+            --tw-contrast: ;
+            --tw-grayscale: ;
+            --tw-hue-rotate: ;
+            --tw-invert: ;
+            --tw-saturate: ;
+            --tw-sepia: ;
+            --tw-drop-shadow: ;
+            --tw-backdrop-blur: ;
+            --tw-backdrop-brightness: ;
+            --tw-backdrop-contrast: ;
+            --tw-backdrop-grayscale: ;
+            --tw-backdrop-hue-rotate: ;
+            --tw-backdrop-invert: ;
+            --tw-backdrop-opacity: ;
+            --tw-backdrop-saturate: ;
+            --tw-backdrop-sepia: ;
+            --tw-contain-size: ;
+            --tw-contain-layout: ;
+            --tw-contain-paint: ;
+            --tw-contain-style:
+        }
+
+        /* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */
+        *,
+        ::after,
+        ::before {
+            box-sizing: border-box;
+            border-width: 0;
+            border-style: solid;
+            border-color: #e5e7eb
+        }
+
+        ::after,
+        ::before {
+            --tw-content: ''
+        }
+
+        :host,
+        html {
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            -moz-tab-size: 4;
+            tab-size: 4;
+            font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        body {
+            margin: 0;
+            line-height: inherit
+        }
+
+        hr {
+            height: 0;
+            color: inherit;
+            border-top-width: 1px
+        }
+
+        abbr:where([title]) {
+            -webkit-text-decoration: underline dotted;
+            text-decoration: underline dotted
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-size: inherit;
+            font-weight: inherit
+        }
+
+        a {
+            color: inherit;
+            text-decoration: inherit
+        }
+
+        b,
+        strong {
+            font-weight: bolder
+        }
+
+        code,
+        kbd,
+        pre,
+        samp {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-feature-settings: normal;
+            font-variation-settings: normal;
+            font-size: 1em
+        }
+
+        small {
+            font-size: 80%
+        }
+
+        sub,
+        sup {
+            font-size: 75%;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline
+        }
+
+        sub {
+            bottom: -.25em
+        }
+
+        sup {
+            top: -.5em
+        }
+
+        table {
+            text-indent: 0;
+            border-color: inherit;
+            border-collapse: collapse
+        }
+
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            font-family: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+            font-size: 100%;
+            font-weight: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            color: inherit;
+            margin: 0;
+            padding: 0
+        }
+
+        button,
+        select {
+            text-transform: none
+        }
+
+        button,
+        input:where([type=button]),
+        input:where([type=reset]),
+        input:where([type=submit]) {
+            -webkit-appearance: button;
+            background-color: transparent;
+            background-image: none
+        }
+
+        :-moz-focusring {
+            outline: auto
+        }
+
+        :-moz-ui-invalid {
+            box-shadow: none
+        }
+
+        progress {
+            vertical-align: baseline
+        }
+
+        ::-webkit-inner-spin-button,
+        ::-webkit-outer-spin-button {
+            height: auto
+        }
+
+        [type=search] {
+            -webkit-appearance: textfield;
+            outline-offset: -2px
+        }
+
+        ::-webkit-search-decoration {
+            -webkit-appearance: none
+        }
+
+        ::-webkit-file-upload-button {
+            -webkit-appearance: button;
+            font: inherit
+        }
+
+        summary {
+            display: list-item
+        }
+
+        blockquote,
+        dd,
+        dl,
+        figure,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        hr,
+        p,
+        pre {
+            margin: 0
+        }
+
+        fieldset {
+            margin: 0;
+            padding: 0
+        }
+
+        legend {
+            padding: 0
+        }
+
+        menu,
+        ol,
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0
+        }
+
+        dialog {
+            padding: 0
+        }
+
+        textarea {
+            resize: vertical
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            opacity: 1;
+            color: #9ca3af
+        }
+
+        [role=button],
+        button {
+            cursor: pointer
+        }
+
+        :disabled {
+            cursor: default
+        }
+
+        audio,
+        canvas,
+        embed,
+        iframe,
+        img,
+        object,
+        svg,
+        video {
+            display: block;
+            vertical-align: middle
+        }
+
+        img,
+        video {
+            max-width: 100%;
+            height: auto
+        }
+
+        [hidden]:where(:not([hidden=until-found])) {
+            display: none
+        }
+
+        .container {
+            width: 100%
+        }
+
+        @media (min-width: 640px) {
+            .container {
+                max-width: 640px
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 768px
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1024px
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .container {
+                max-width: 1280px
+            }
+        }
+
+        @media (min-width: 1536px) {
+            .container {
+                max-width: 1536px
+            }
+        }
+
+        .sticky {
+            position: sticky
+        }
+
+        .top-0 {
+            top: 0px
+        }
+
+        .z-40 {
+            z-index: 40
+        }
+
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem
+        }
+
+        .mr-1 {
+            margin-right: 0.25rem
+        }
+
+        .mr-2 {
+            margin-right: 0.5rem
+        }
+
+        .mr-3 {
+            margin-right: 0.75rem
+        }
+
+        .mt-1 {
+            margin-top: 0.25rem
+        }
+
+        .mt-3 {
+            margin-top: 0.75rem
+        }
+
+        .mt-4 {
+            margin-top: 1rem
+        }
+
+        .mt-6 {
+            margin-top: 1.5rem
+        }
+
+        .inline {
+            display: inline
+        }
+
+        .flex {
+            display: flex
+        }
+
+        .h-10 {
+            height: 2.5rem
+        }
+
+        .h-3 {
+            height: 0.75rem
+        }
+
+        .h-4 {
+            height: 1rem
+        }
+
+        .h-5 {
+            height: 1.25rem
+        }
+
+        .h-6 {
+            height: 1.5rem
+        }
+
+        .h-full {
+            height: 100%
+        }
+
+        .min-h-screen {
+            min-height: 100vh
+        }
+
+        .w-10 {
+            width: 2.5rem
+        }
+
+        .w-3 {
+            width: 0.75rem
+        }
+
+        .w-4 {
+            width: 1rem
+        }
+
+        .w-5 {
+            width: 1.25rem
+        }
+
+        .w-6 {
+            width: 1.5rem
+        }
+
+        .w-full {
+            width: 100%
+        }
+
+        .flex-col {
+            flex-direction: column
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap
+        }
+
+        .items-center {
+            align-items: center
+        }
+
+        .justify-end {
+            justify-content: flex-end
+        }
+
+        .justify-center {
+            justify-content: center
+        }
+
+        .justify-between {
+            justify-content: space-between
+        }
+
+        .justify-around {
+            justify-content: space-around
+        }
+
+        .gap-2 {
+            gap: 0.5rem
+        }
+
+        .space-x-2> :not([hidden])~ :not([hidden]) {
+            --tw-space-x-reverse: 0;
+            margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+            margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)))
+        }
+
+        .space-x-4> :not([hidden])~ :not([hidden]) {
+            --tw-space-x-reverse: 0;
+            margin-right: calc(1rem * var(--tw-space-x-reverse));
+            margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)))
+        }
+
+        .space-y-4> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(1rem * var(--tw-space-y-reverse))
+        }
+
+        .overflow-hidden {
+            overflow: hidden
+        }
+
+        .scroll-smooth {
+            scroll-behavior: smooth
+        }
+
+        .rounded-2xl {
+            border-radius: 1rem
+        }
+
+        .rounded-full {
+            border-radius: 9999px
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem
+        }
+
+        .border-2 {
+            border-width: 2px
+        }
+
+        .border-secondary-light {
+            --tw-border-opacity: 1;
+            border-color: rgb(32 201 151 / var(--tw-border-opacity, 1))
+        }
+
+        .bg-blue-100 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-gray-50 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-green-100 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(220 252 231 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-indigo-100 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(224 231 255 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-pink-100 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(252 231 243 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-primary-light {
+            --tw-bg-opacity: 1;
+            background-color: rgb(0 123 255 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-red-100 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(254 226 226 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-white {
+            --tw-bg-opacity: 1;
+            background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-yellow-100 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(254 249 195 / var(--tw-bg-opacity, 1))
+        }
+
+        .bg-gradient-to-br {
+            background-image: linear-gradient(to bottom right, var(--tw-gradient-stops))
+        }
+
+        .from-blue-50 {
+            --tw-gradient-from: #eff6ff var(--tw-gradient-from-position);
+            --tw-gradient-to: rgb(239 246 255 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+        }
+
+        .to-teal-50 {
+            --tw-gradient-to: #f0fdfa var(--tw-gradient-to-position)
+        }
+
+        .object-cover {
+            object-fit: cover
+        }
+
+        .p-4 {
+            padding: 1rem
+        }
+
+        .px-2 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem
+        }
+
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem
+        }
+
+        .py-1 {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem
+        }
+
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem
+        }
+
+        .pb-20 {
+            padding-bottom: 5rem
+        }
+
+        .pt-0 {
+            padding-top: 0px
+        }
+
+        .font-poppins {
+            font-family: Poppins, sans-serif
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.75rem
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+            line-height: 1rem
+        }
+
+        .font-medium {
+            font-weight: 500
+        }
+
+        .font-semibold {
+            font-weight: 600
+        }
+
+        .text-gray-500 {
+            --tw-text-opacity: 1;
+            color: rgb(107 114 128 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-700 {
+            --tw-text-opacity: 1;
+            color: rgb(55 65 81 / var(--tw-text-opacity, 1))
+        }
+
+        .text-gray-800 {
+            --tw-text-opacity: 1;
+            color: rgb(31 41 55 / var(--tw-text-opacity, 1))
+        }
+
+        .text-green-800 {
+            --tw-text-opacity: 1;
+            color: rgb(22 101 52 / var(--tw-text-opacity, 1))
+        }
+
+        .text-indigo-500 {
+            --tw-text-opacity: 1;
+            color: rgb(99 102 241 / var(--tw-text-opacity, 1))
+        }
+
+        .text-pink-500 {
+            --tw-text-opacity: 1;
+            color: rgb(236 72 153 / var(--tw-text-opacity, 1))
+        }
+
+        .text-primary-light {
+            --tw-text-opacity: 1;
+            color: rgb(0 123 255 / var(--tw-text-opacity, 1))
+        }
+
+        .text-red-500 {
+            --tw-text-opacity: 1;
+            color: rgb(239 68 68 / var(--tw-text-opacity, 1))
+        }
+
+        .text-white {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity, 1))
+        }
+
+        .text-yellow-500 {
+            --tw-text-opacity: 1;
+            color: rgb(234 179 8 / var(--tw-text-opacity, 1))
+        }
+
+        .shadow-lg {
+            --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+        }
+
+        .shadow-md {
+            --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+        }
+
+        .transition-colors {
+            transition-property: color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms
+        }
+
+        .duration-300 {
+            transition-duration: 300ms
+        }
+
+        .hover\:bg-blue-600:hover {
+            --tw-bg-opacity: 1;
+            background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1))
+        }
+
+        .hover\:text-gray-700:hover {
+            --tw-text-opacity: 1;
+            color: rgb(55 65 81 / var(--tw-text-opacity, 1))
+        }
+
+        .dark\:border-secondary-dark:is(.dark *) {
+            --tw-border-opacity: 1;
+            border-color: rgb(16 185 129 / var(--tw-border-opacity, 1))
+        }
+
+        .dark\:bg-blue-900:is(.dark *) {
+            --tw-bg-opacity: 1;
+            background-color: rgb(30 58 138 / var(--tw-bg-opacity, 1))
+        }
+
+        .dark\:bg-gray-700:is(.dark *) {
+            --tw-bg-opacity: 1;
+            background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1))
+        }
+
+        .dark\:bg-gray-800:is(.dark *) {
+            --tw-bg-opacity: 1;
+            background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1))
+        }
+
+        .dark\:bg-green-900:is(.dark *) {
+            --tw-bg-opacity: 1;
+            background-color: rgb(20 83 45 / var(--tw-bg-opacity, 1))
+        }
+
+        .dark\:bg-indigo-900:is(.dark *) {
+            --tw-bg-opacity: 1;
+            background-color: rgb(49 46 129 / var(--tw-bg-opacity, 1))
+        }
+
+        .dark\:bg-pink-900:is(.dark *) {
+            --tw-bg-opacity: 1;
+            background-color: rgb(131 24 67 / var(--tw-bg-opacity, 1))
+        }
+
+        .dark\:bg-primary-dark:is(.dark *) {
+            --tw-bg-opacity: 1;
+            background-color: rgb(59 130 246 / var(--tw-bg-opacity, 1))
+        }
+
+        .dark\:bg-red-900:is(.dark *) {
+            --tw-bg-opacity: 1;
+            background-color: rgb(127 29 29 / var(--tw-bg-opacity, 1))
+        }
+
+        .dark\:bg-yellow-900:is(.dark *) {
+            --tw-bg-opacity: 1;
+            background-color: rgb(113 63 18 / var(--tw-bg-opacity, 1))
+        }
+
+        .dark\:from-gray-900:is(.dark *) {
+            --tw-gradient-from: #111827 var(--tw-gradient-from-position);
+            --tw-gradient-to: rgb(17 24 39 / 0) var(--tw-gradient-to-position);
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to)
+        }
+
+        .dark\:to-gray-800:is(.dark *) {
+            --tw-gradient-to: #1f2937 var(--tw-gradient-to-position)
+        }
+
+        .dark\:text-gray-300:is(.dark *) {
+            --tw-text-opacity: 1;
+            color: rgb(209 213 219 / var(--tw-text-opacity, 1))
+        }
+
+        .dark\:text-gray-400:is(.dark *) {
+            --tw-text-opacity: 1;
+            color: rgb(156 163 175 / var(--tw-text-opacity, 1))
+        }
+
+        .dark\:text-green-200:is(.dark *) {
+            --tw-text-opacity: 1;
+            color: rgb(187 247 208 / var(--tw-text-opacity, 1))
+        }
+
+        .dark\:text-indigo-400:is(.dark *) {
+            --tw-text-opacity: 1;
+            color: rgb(129 140 248 / var(--tw-text-opacity, 1))
+        }
+
+        .dark\:text-pink-400:is(.dark *) {
+            --tw-text-opacity: 1;
+            color: rgb(244 114 182 / var(--tw-text-opacity, 1))
+        }
+
+        .dark\:text-primary-dark:is(.dark *) {
+            --tw-text-opacity: 1;
+            color: rgb(59 130 246 / var(--tw-text-opacity, 1))
+        }
+
+        .dark\:text-red-400:is(.dark *) {
+            --tw-text-opacity: 1;
+            color: rgb(248 113 113 / var(--tw-text-opacity, 1))
+        }
+
+        .dark\:text-white:is(.dark *) {
+            --tw-text-opacity: 1;
+            color: rgb(255 255 255 / var(--tw-text-opacity, 1))
+        }
+
+        .dark\:text-yellow-400:is(.dark *) {
+            --tw-text-opacity: 1;
+            color: rgb(250 204 21 / var(--tw-text-opacity, 1))
+        }
+
+        .dark\:hover\:bg-blue-500:hover:is(.dark *) {
+            --tw-bg-opacity: 1;
+            background-color: rgb(59 130 246 / var(--tw-bg-opacity, 1))
+        }
+
+        .dark\:hover\:text-gray-300:hover:is(.dark *) {
+            --tw-text-opacity: 1;
+            color: rgb(209 213 219 / var(--tw-text-opacity, 1))
+        }
+    </style>
+</head>
+
+<body
+    class="font-poppins bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300 min-h-screen pb-20">
+
+    <!-- Top Section -->
     <header class="sticky top-0 w-full bg-white dark:bg-gray-800 shadow-md z-40 transition-colors duration-300">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
-                <h1 class="text-lg font-medium text-gray-800 dark:text-white">📈 Health Analysis</h1>
+                <div class="flex flex-col">
+                    <h1 class="text-lg font-medium text-gray-800 dark:text-white transition-colors duration-300">Your
+                        Health Trends</h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">Track your health
+                        metrics</p>
+                </div>
             </div>
-            
+
             <div class="flex items-center space-x-4">
                 <label class="theme-switch">
                     <input type="checkbox" id="theme-toggle">
                     <span class="slider"></span>
                 </label>
+
+                <button id="profile-button"
+                    class="w-10 h-10 rounded-full overflow-hidden border-2 border-secondary-light dark:border-secondary-dark transition-colors duration-300">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%2320C997'/%3E%3Ccircle cx='50' cy='38' r='18' fill='%23FFFFFF'/%3E%3Cpath d='M25 85 C25 65 75 65 75 85' stroke='%23FFFFFF' stroke-width='18' fill='none'/%3E%3C/svg%3E"
+                        alt="Profile" class="w-full h-full object-cover">
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Date Range Selector -->
-    <div class="container mx-auto px-4 py-4">
-        <div class="flex justify-between items-center mb-2">
-            <h3 class="text-md font-semibold text-gray-800 dark:text-white">Analysis Period</h3>
-            <button class="text-primary dark:text-primary-dark text-sm font-medium flex items-center">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+    <!-- Tab Navigation -->
+    <div class="container mx-auto px-4 py-3">
+        <div class="tab-container">
+            <div class="tab active" data-tab="all">All Metrics</div>
+            <div class="tab" data-tab="fbs">Blood Sugar</div>
+            <div class="tab" data-tab="bp">Blood Pressure</div>
+            <div class="tab" data-tab="hr">Heart Rate</div>
+            <div class="tab" data-tab="spo2">SPO2</div>
+            <div class="tab" data-tab="cholesterol">Cholesterol</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-2">
+        <!-- Health Metrics Accordion -->
+        <div class="space-y-4">
+            <!-- Blood Sugar (FBS) -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 glassmorphism card animate-fadeIn"
+                id="fbs-card">
+                <div class="accordion-header p-4 flex justify-between items-center" data-target="fbs-content">
+                    <div class="flex items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
+                            <svg class="w-6 h-6 text-primary-light dark:text-primary-dark" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 dark:text-white">Blood Sugar (FBS)</h3>
+                            <div class="flex items-center mt-1">
+                                <span class="text-sm text-gray-500 dark:text-gray-400 mr-2">Last: 95 mg/dL</span>
+                                <span
+                                    class="text-xs px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Normal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 accordion-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+
+                <div class="accordion-content" id="fbs-content">
+                    <div class="p-4 pt-0">
+                        <div
+                            class="graph-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors duration-300">
+                            <canvas id="fbs-chart"></canvas>
+                        </div>
+
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <div class="data-source-tag tag-me">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>Added by Me</span>
+                            </div>
+                            <div class="data-source-tag tag-pathologist">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>Edited by Dr. Smith</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button class="view-report-btn app-button" data-report="fbs-report">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                View Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blood Pressure (BP) -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 glassmorphism card animate-fadeIn stagger-1"
+                id="bp-card">
+                <div class="accordion-header p-4 flex justify-between items-center" data-target="bp-content">
+                    <div class="flex items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center mr-3">
+                            <svg class="w-6 h-6 text-red-500 dark:text-red-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 dark:text-white">Blood Pressure (BP)</h3>
+                            <div class="flex items-center mt-1">
+                                <span class="text-sm text-gray-500 dark:text-gray-400 mr-2">Last: 120/80 mmHg</span>
+                                <span
+                                    class="text-xs px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Normal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 accordion-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+
+                <div class="accordion-content" id="bp-content">
+                    <div class="p-4 pt-0">
+                        <div
+                            class="graph-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors duration-300">
+                            <canvas id="bp-chart"></canvas>
+                        </div>
+
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <div class="data-source-tag tag-me">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>Added by Me</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button class="view-report-btn app-button" data-report="bp-report">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                View Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Heart Rate (HR) -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 glassmorphism card animate-fadeIn stagger-2"
+                id="hr-card">
+                <div class="accordion-header p-4 flex justify-between items-center" data-target="hr-content">
+                    <div class="flex items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-pink-100 dark:bg-pink-900 flex items-center justify-center mr-3">
+                            <svg class="w-6 h-6 text-pink-500 dark:text-pink-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 dark:text-white">Heart Rate (HR)</h3>
+                            <div class="flex items-center mt-1">
+                                <span class="text-sm text-gray-500 dark:text-gray-400 mr-2">Last: 72 bpm</span>
+                                <span
+                                    class="text-xs px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Normal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 accordion-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+
+                <div class="accordion-content" id="hr-content">
+                    <div class="p-4 pt-0">
+                        <div
+                            class="graph-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors duration-300">
+                            <canvas id="hr-chart"></canvas>
+                        </div>
+
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <div class="data-source-tag tag-pathologist">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>Edited by Dr. Johnson</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button class="view-report-btn app-button" data-report="hr-report">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                View Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Oxygen Saturation (SPO2) -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 glassmorphism card animate-fadeIn stagger-3"
+                id="spo2-card">
+                <div class="accordion-header p-4 flex justify-between items-center" data-target="spo2-content">
+                    <div class="flex items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center mr-3">
+                            <svg class="w-6 h-6 text-indigo-500 dark:text-indigo-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 dark:text-white">Oxygen Saturation (SPO2)</h3>
+                            <div class="flex items-center mt-1">
+                                <span class="text-sm text-gray-500 dark:text-gray-400 mr-2">Last: 98%</span>
+                                <span
+                                    class="text-xs px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Normal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 accordion-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+
+                <div class="accordion-content" id="spo2-content">
+                    <div class="p-4 pt-0">
+                        <div
+                            class="graph-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors duration-300">
+                            <canvas id="spo2-chart"></canvas>
+                        </div>
+
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <div class="data-source-tag tag-me">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>Added by Me</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button class="view-report-btn app-button" data-report="spo2-report">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                View Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cholesterol -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-colors duration-300 glassmorphism card animate-fadeIn stagger-4"
+                id="cholesterol-card">
+                <div class="accordion-header p-4 flex justify-between items-center" data-target="cholesterol-content">
+                    <div class="flex items-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mr-3">
+                            <svg class="w-6 h-6 text-yellow-500 dark:text-yellow-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 dark:text-white">Cholesterol</h3>
+                            <div class="flex items-center mt-1">
+                                <span class="text-sm text-gray-500 dark:text-gray-400 mr-2">Last: 180 mg/dL</span>
+                                <span
+                                    class="text-xs px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Normal</span>
+                            </div>
+                        </div>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400 accordion-icon" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+
+                <div class="accordion-content" id="cholesterol-content">
+                    <div class="p-4 pt-0">
+                        <div
+                            class="graph-container bg-gray-50 dark:bg-gray-700 rounded-lg p-4 transition-colors duration-300">
+                            <canvas id="cholesterol-chart"></canvas>
+                        </div>
+
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <div class="data-source-tag tag-pathologist">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>Edited by Dr. Williams</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button class="view-report-btn app-button" data-report="cholesterol-report">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                View Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <div class="flex justify-around items-center">
+            <a href="patientdashboard.html" class="nav-item">
+                <svg class="w-6 h-6 nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                    </path>
                 </svg>
-                Custom Range
-            </button>
-        </div>
-        <div class="date-range-selector">
-            <div class="date-range-option active" data-range="7">Last 7 days</div>
-            <div class="date-range-option" data-range="30">Last 30 days</div>
-            <div class="date-range-option" data-range="90">Last 3 months</div>
-            <div class="date-range-option" data-range="180">Last 6 months</div>
-        </div>
-    </div>
-
-    <!-- Health Trends Overview -->
-    <div class="container mx-auto px-4 py-2">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-4 glassmorphism animate-fadeIn">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-md font-semibold text-gray-800 dark:text-white">Health Trends</h3>
-                <div class="flex space-x-2">
-                    <button class="trend-filter-btn active px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full" data-filter="all">All</button>
-                    <button class="trend-filter-btn px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full" data-filter="improving">Improving</button>
-                    <button class="trend-filter-btn px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full" data-filter="declining">Declining</button>
-                </div>
-            </div>
-            
-            <div class="space-y-4 trend-items">
-                <!-- Blood Sugar Trend -->
-                <div class="trend-item" data-trend="improving">
-                    <div class="flex justify-between items-center mb-1">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-2">
-                                <span class="text-lg">🩸</span>
-                            </div>
-                            <h4 class="text-sm font-medium text-gray-800 dark:text-white">Blood Sugar</h4>
-                        </div>
-                        <div class="flex items-center trend-up">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-                            </svg>
-                            <span class="text-sm font-medium ml-1">12%</span>
-                        </div>
-                    </div>
-                    <div class="h-24">
-                        <canvas id="bloodSugarTrendChart" width="574" height="96" style="display: block; box-sizing: border-box; height: 96px; width: 574px;"></canvas>
-                    </div>
-                    <div class="flex justify-between items-center mt-1">
-                        <div>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Avg: 92 mg/dL</span>
-                        </div>
-                        <div class="tooltip">
-                            <span class="text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Stable</span>
-                            <span class="tooltip-text">Within normal range</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Blood Pressure Trend -->
-                <div class="trend-item" data-trend="declining">
-                    <div class="flex justify-between items-center mb-1">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center mr-2">
-                                <span class="text-lg">❤️</span>
-                            </div>
-                            <h4 class="text-sm font-medium text-gray-800 dark:text-white">Blood Pressure</h4>
-                        </div>
-                        <div class="flex items-center trend-down">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                            </svg>
-                            <span class="text-sm font-medium ml-1">8%</span>
-                        </div>
-                    </div>
-                    <div class="h-24">
-                        <canvas id="bloodPressureTrendChart" width="574" height="96" style="display: block; box-sizing: border-box; height: 96px; width: 574px;"></canvas>
-                    </div>
-                    <div class="flex justify-between items-center mt-1">
-                        <div>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Avg: 125/82 mmHg</span>
-                        </div>
-                        <div class="tooltip">
-                            <span class="text-xs px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full">Elevated</span>
-                            <span class="tooltip-text">Slightly above normal</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Heart Rate Trend -->
-                <div class="trend-item" data-trend="improving">
-                    <div class="flex justify-between items-center mb-1">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-pink-100 dark:bg-pink-900 flex items-center justify-center mr-2">
-                                <span class="text-lg">💓</span>
-                            </div>
-                            <h4 class="text-sm font-medium text-gray-800 dark:text-white">Heart Rate</h4>
-                        </div>
-                        <div class="flex items-center trend-up">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-                            </svg>
-                            <span class="text-sm font-medium ml-1">5%</span>
-                        </div>
-                    </div>
-                    <div class="h-24">
-                        <canvas id="heartRateTrendChart" width="574" height="96" style="display: block; box-sizing: border-box; height: 96px; width: 574px;"></canvas>
-                    </div>
-                    <div class="flex justify-between items-center mt-1">
-                        <div>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Avg: 68 bpm</span>
-                        </div>
-                        <div class="tooltip">
-                            <span class="text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Excellent</span>
-                            <span class="tooltip-text">Healthy resting rate</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Sleep Quality Trend -->
-                <div class="trend-item" data-trend="declining">
-                    <div class="flex justify-between items-center mb-1">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center mr-2">
-                                <span class="text-lg">😴</span>
-                            </div>
-                            <h4 class="text-sm font-medium text-gray-800 dark:text-white">Sleep Quality</h4>
-                        </div>
-                        <div class="flex items-center trend-down">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                            </svg>
-                            <span class="text-sm font-medium ml-1">15%</span>
-                        </div>
-                    </div>
-                    <div class="h-24">
-                        <canvas id="sleepQualityTrendChart" width="574" height="96" style="display: block; box-sizing: border-box; height: 96px; width: 574px;"></canvas>
-                    </div>
-                    <div class="flex justify-between items-center mt-1">
-                        <div>
-                            <span class="text-xs text-gray-500 dark:text-gray-400">Avg: 6.2 hours</span>
-                        </div>
-                        <div class="tooltip">
-                            <span class="text-xs px-2 py-0.5 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full">Poor</span>
-                            <span class="tooltip-text">Below recommended</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Health Insights -->
-    <div class="container mx-auto px-4 py-2">
-        <h3 class="text-md font-semibold text-gray-800 dark:text-white mb-2">Health Insights</h3>
-        <div class="space-y-3 animate-fadeIn stagger-2">
-            <!-- Insight 1 -->
-            <div class="insights-card positive bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 glassmorphism">
-                <div class="flex items-start">
-                    <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3 flex-shrink-0">
-                        <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-medium text-gray-800 dark:text-white">Blood Sugar Improvement</h4>
-                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Your average blood sugar levels have improved by 12% over the last 30 days. Keep up the good work with your diet and exercise routine.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Insight 2 -->
-            <div class="insights-card warning bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 glassmorphism">
-                <div class="flex items-start">
-                    <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mr-3 flex-shrink-0">
-                        <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-medium text-gray-800 dark:text-white">Blood Pressure Alert</h4>
-                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Your blood pressure readings have been slightly elevated recently. Consider reducing sodium intake and increasing physical activity.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Insight 3 -->
-            <div class="insights-card negative bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 glassmorphism">
-                <div class="flex items-start">
-                    <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center mr-3 flex-shrink-0">
-                        <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-medium text-gray-800 dark:text-white">Sleep Quality Concern</h4>
-                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Your sleep quality has declined by 15%. You're averaging only 6.2 hours of sleep per night, which is below the recommended 7-8 hours.</p>
-                        <button class="mt-2 text-xs text-primary dark:text-primary-dark font-medium flex items-center">
-                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            View sleep improvement tips
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Insight 4 -->
-            <div class="insights-card info bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 glassmorphism">
-                <div class="flex items-start">
-                    <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3 flex-shrink-0">
-                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-medium text-gray-800 dark:text-white">Medication Adherence</h4>
-                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">You've taken your medications on schedule 92% of the time this month, which is excellent. Consistent medication adherence helps maintain stable health metrics.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Correlation Analysis -->
-    <div class="container mx-auto px-4 py-2">
-        <h3 class="text-md font-semibold text-gray-800 dark:text-white mb-2">Correlation Analysis</h3>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-4 glassmorphism animate-fadeIn stagger-3">
-            <div class="flex justify-between items-center mb-4">
-                <h4 class="text-sm font-medium text-gray-800 dark:text-white">Health Factors Correlation</h4>
-                <button class="text-primary dark:text-primary-dark text-sm font-medium">Learn More</button>
-            </div>
-            
-            <div class="h-64">
-                <canvas id="correlationChart" width="574" height="256" style="display: block; box-sizing: border-box; height: 256px; width: 574px;"></canvas>
-            </div>
-            
-            <div class="mt-4 space-y-2">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
-                        <span class="text-xs text-gray-600 dark:text-gray-400">Exercise &amp; Blood Pressure</span>
-                    </div>
-                    <span class="text-xs font-medium text-gray-800 dark:text-white">Strong negative correlation</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
-                        <span class="text-xs text-gray-600 dark:text-gray-400">Sleep &amp; Stress Levels</span>
-                    </div>
-                    <span class="text-xs font-medium text-gray-800 dark:text-white">Strong negative correlation</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
-                        <span class="text-xs text-gray-600 dark:text-gray-400">Sodium Intake &amp; Blood Pressure</span>
-                    </div>
-                    <span class="text-xs font-medium text-gray-800 dark:text-white">Strong positive correlation</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Health Recommendations -->
-    <div class="container mx-auto px-4 py-2 mb-20">
-        <h3 class="text-md font-semibold text-gray-800 dark:text-white mb-2">Personalized Recommendations</h3>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-4 glassmorphism animate-fadeIn stagger-4">
-            <div class="flex justify-between items-center mb-4">
-                <h4 class="text-sm font-medium text-gray-800 dark:text-white">Based on your health data</h4>
-                <button class="text-primary dark:text-primary-dark text-sm font-medium">View All</button>
-            </div>
-            
-            <div class="space-y-3">
-                <!-- Recommendation 1 -->
-                <div class="flex items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-800 flex items-center justify-center mr-3">
-                        <span class="text-lg">🏃‍♂️</span>
-                    </div>
-                    <div class="flex-1">
-                        <h5 class="text-sm font-medium text-gray-800 dark:text-white">Increase Physical Activity</h5>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Aim for 30 minutes of moderate exercise 5 days a week to help lower blood pressure.</p>
-                    </div>
-                    <button class="ml-2 p-2 rounded-full bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-400">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
-                </div>
-                
-                <!-- Recommendation 2 -->
-                <div class="flex items-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-800 flex items-center justify-center mr-3">
-                        <span class="text-lg">🥗</span>
-                    </div>
-                    <div class="flex-1">
-                        <h5 class="text-sm font-medium text-gray-800 dark:text-white">Reduce Sodium Intake</h5>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Limit processed foods and add less salt to meals to help manage blood pressure.</p>
-                    </div>
-                    <button class="ml-2 p-2 rounded-full bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-400">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
-                </div>
-                
-                <!-- Recommendation 3 -->
-                <div class="flex items-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                    <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-800 flex items-center justify-center mr-3">
-                        <span class="text-lg">😴</span>
-                    </div>
-                    <div class="flex-1">
-                        <h5 class="text-sm font-medium text-gray-800 dark:text-white">Improve Sleep Hygiene</h5>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">Establish a regular sleep schedule and avoid screens 1 hour before bedtime.</p>
-                    </div>
-                    <button class="ml-2 p-2 rounded-full bg-white dark:bg-gray-700 text-gray-500 dark:text-gray-400">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <button class="w-full mt-4 py-2 px-4 bg-primary dark:bg-primary-dark text-white rounded-lg text-sm font-medium flex items-center justify-center ripple">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="patientreports.html" class="nav-item">
+                <svg class="w-6 h-6 nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                    </path>
                 </svg>
-                Generate Health Action Plan
-            </button>
+                <span class="nav-label">Records</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <svg class="w-6 h-6 nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                    </path>
+                </svg>
+                <span class="nav-label">Analysis</span>
+            </a>
+            <a href="#" class="nav-item">
+                <svg class="w-6 h-6 nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                    </path>
+                </svg>
+                <span class="nav-label">Notifications</span>
+            </a>
         </div>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg flex justify-around items-center py-2 px-4 transition-colors duration-300">
-        <a href="#" class="nav-item flex flex-col items-center text-gray-500 dark:text-gray-400">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-            </svg>
-            <span class="text-xs mt-1">Home</span>
-        </a>
-        <a href="#" class="nav-item flex flex-col items-center text-gray-500 dark:text-gray-400">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-            </svg>
-            <span class="text-xs mt-1">Records</span>
-        </a>
-        <a href="#" class="nav-item flex flex-col items-center text-primary dark:text-primary-dark">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-            </svg>
-            <span class="text-xs mt-1">Analysis</span>
-        </a>
-        <a href="#" class="nav-item flex flex-col items-center text-gray-500 dark:text-gray-400">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-            </svg>
-            <span class="text-xs mt-1">Notifications</span>
-        </a>
     </nav>
 
+    <!-- Report Modal -->
+    <div class="report-modal" id="report-modal">
+        <div class="report-modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white" id="report-title">Report Details</h3>
+                <button id="close-modal"
+                    class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="space-y-4" id="report-content">
+                <!-- Report content will be dynamically inserted here -->
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <button id="download-report"
+                    class="py-2 px-4 bg-primary-light dark:bg-primary-dark text-white font-medium rounded-lg hover:bg-blue-600 dark:hover:bg-blue-500 transition-colors duration-300 app-button">
+                    <svg class="w-5 h-5 mr-1 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    Download Report
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Theme toggle functionality
+        // Theme Toggle
         const themeToggle = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-        
-        // Check for saved theme preference or use system preference
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            html.classList.add('dark');
+        const htmlElement = document.documentElement;
+
+        // Check for saved theme preference or use device preference
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            htmlElement.classList.add('dark');
             themeToggle.checked = true;
-        } else {
-            html.classList.remove('dark');
-            themeToggle.checked = false;
         }
-        
-        // Toggle theme when switch is clicked
-        themeToggle.addEventListener('change', function() {
+
+        themeToggle.addEventListener('change', function () {
             if (this.checked) {
-                html.classList.add('dark');
-                localStorage.theme = 'dark';
+                htmlElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
                 updateChartColors(true);
             } else {
-                html.classList.remove('dark');
-                localStorage.theme = 'light';
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
                 updateChartColors(false);
             }
         });
-        
-        // Date range selector functionality
-        document.querySelectorAll('.date-range-option').forEach(option => {
-            option.addEventListener('click', function() {
-                // Remove active class from all options
-                document.querySelectorAll('.date-range-option').forEach(opt => {
-                    opt.classList.remove('active');
-                });
-                
-                // Add active class to clicked option
-                this.classList.add('active');
-                
-                // Update chart data based on selected range
-                const range = this.getAttribute('data-range');
-                updateChartDataByRange(range);
-            });
-        });
-        
-        // Trend filter functionality
-        document.querySelectorAll('.trend-filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                // Remove active class from all buttons
-                document.querySelectorAll('.trend-filter-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.classList.remove('bg-blue-100', 'dark:bg-blue-900/30', 'text-blue-800', 'dark:text-blue-300');
-                    b.classList.add('bg-gray-100', 'dark:bg-gray-700', 'text-gray-600', 'dark:text-gray-400');
-                });
-                
-                // Add active class to clicked button
-                this.classList.add('active');
-                this.classList.remove('bg-gray-100', 'dark:bg-gray-700', 'text-gray-600', 'dark:text-gray-400');
-                this.classList.add('bg-blue-100', 'dark:bg-blue-900/30', 'text-blue-800', 'dark:text-blue-300');
-                
-                // Filter trend items
-                const filter = this.getAttribute('data-filter');
-                filterTrendItems(filter);
-            });
-        });
-        
-        // Filter trend items based on selected filter
-        function filterTrendItems(filter) {
-            const trendItems = document.querySelectorAll('.trend-item');
-            
-            trendItems.forEach(item => {
-                const trend = item.getAttribute('data-trend');
-                
-                if (filter === 'all' || trend === filter) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        }
-        
-        // Chart configurations
-        let isDarkMode = html.classList.contains('dark');
-        let chartConfigs = {};
-        
-        // Function to get chart colors based on theme
-        function getChartColors(isDark) {
-            return {
-                bloodSugar: {
-                    borderColor: isDark ? '#3b82f6' : '#3b82f6',
-                    backgroundColor: isDark ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.2)',
-                    gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                    textColor: isDark ? '#9ca3af' : '#6b7280'
-                },
-                bloodPressure: {
-                    borderColor: isDark ? '#ef4444' : '#ef4444',
-                    backgroundColor: isDark ? 'rgba(239, 68, 68, 0.2)' : 'rgba(239, 68, 68, 0.2)',
-                    gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                    textColor: isDark ? '#9ca3af' : '#6b7280'
-                },
-                heartRate: {
-                    borderColor: isDark ? '#ec4899' : '#ec4899',
-                    backgroundColor: isDark ? 'rgba(236, 72, 153, 0.2)' : 'rgba(236, 72, 153, 0.2)',
-                    gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                    textColor: isDark ? '#9ca3af' : '#6b7280'
-                },
-                sleepQuality: {
-                    borderColor: isDark ? '#6366f1' : '#6366f1',
-                    backgroundColor: isDark ? 'rgba(99, 102, 241, 0.2)' : 'rgba(99, 102, 241, 0.2)',
-                    gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                    textColor: isDark ? '#9ca3af' : '#6b7280'
-                },
-                correlation: {
-                    gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                    textColor: isDark ? '#9ca3af' : '#6b7280'
-                }
-            };
-        }
-        
-        // Initialize charts
-        function initCharts() {
-            const colors = getChartColors(isDarkMode);
-            
-            // Blood Sugar Trend Chart
-            const bloodSugarTrendCtx = document.getElementById('bloodSugarTrendChart').getContext('2d');
-            chartConfigs.bloodSugarTrend = new Chart(bloodSugarTrendCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                    datasets: [{
-                        label: 'Blood Sugar',
-                        data: [98, 95, 92, 90],
-                        borderColor: colors.bloodSugar.borderColor,
-                        backgroundColor: colors.bloodSugar.backgroundColor,
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            enabled: true
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: colors.bloodSugar.textColor,
-                                font: {
-                                    size: 8
-                                }
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: colors.bloodSugar.gridColor
-                            },
-                            ticks: {
-                                color: colors.bloodSugar.textColor,
-                                font: {
-                                    size: 8
-                                }
-                            },
-                            min: 80,
-                            max: 110
-                        }
-                    },
-                    elements: {
-                        point: {
-                            radius: 2
-                        }
-                    }
-                }
-            });
-            
-            // Blood Pressure Trend Chart
-            const bloodPressureTrendCtx = document.getElementById('bloodPressureTrendChart').getContext('2d');
-            chartConfigs.bloodPressureTrend = new Chart(bloodPressureTrendCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                    datasets: [{
-                        label: 'Systolic',
-                        data: [120, 122, 125, 128],
-                        borderColor: colors.bloodPressure.borderColor,
-                        backgroundColor: 'transparent',
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Diastolic',
-                        data: [80, 81, 82, 84],
-                        borderColor: 'rgba(239, 68, 68, 0.6)',
-                        backgroundColor: colors.bloodPressure.backgroundColor,
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            enabled: true
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: colors.bloodPressure.textColor,
-                                font: {
-                                    size: 8
-                                }
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: colors.bloodPressure.gridColor
-                            },
-                            ticks: {
-                                color: colors.bloodPressure.textColor,
-                                font: {
-                                    size: 8
-                                }
-                            },
-                            min: 70,
-                            max: 140
-                        }
-                    },
-                    elements: {
-                        point: {
-                            radius: 2
-                        }
-                    }
-                }
-            });
-            
-            // Heart Rate Trend Chart
-            const heartRateTrendCtx = document.getElementById('heartRateTrendChart').getContext('2d');
-            chartConfigs.heartRateTrend = new Chart(heartRateTrendCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                    datasets: [{
-                        label: 'Heart Rate',
-                        data: [72, 70, 69, 68],
-                        borderColor: colors.heartRate.borderColor,
-                        backgroundColor: colors.heartRate.backgroundColor,
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            enabled: true
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: colors.heartRate.textColor,
-                                font: {
-                                    size: 8
-                                }
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: colors.heartRate.gridColor
-                            },
-                            ticks: {
-                                color: colors.heartRate.textColor,
-                                font: {
-                                    size: 8
-                                }
-                            },
-                            min: 60,
-                            max: 80
-                        }
-                    },
-                    elements: {
-                        point: {
-                            radius: 2
-                        }
-                    }
-                }
-            });
-            
-            // Sleep Quality Trend Chart
-            const sleepQualityTrendCtx = document.getElementById('sleepQualityTrendChart').getContext('2d');
-            chartConfigs.sleepQualityTrend = new Chart(sleepQualityTrendCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                    datasets: [{
-                        label: 'Sleep Hours',
-                        data: [7.5, 7.0, 6.5, 6.2],
-                        borderColor: colors.sleepQuality.borderColor,
-                        backgroundColor: colors.sleepQuality.backgroundColor,
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            enabled: true
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: colors.sleepQuality.textColor,
-                                font: {
-                                    size: 8
-                                }
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: colors.sleepQuality.gridColor
-                            },
-                            ticks: {
-                                color: colors.sleepQuality.textColor,
-                                font: {
-                                    size: 8
-                                }
-                            },
-                            min: 5,
-                            max: 9
-                        }
-                    },
-                    elements: {
-                        point: {
-                            radius: 2
-                        }
-                    }
-                }
-            });
-            
-            // Correlation Chart
-            const correlationCtx = document.getElementById('correlationChart').getContext('2d');
-            chartConfigs.correlation = new Chart(correlationCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Exercise & BP', 'Sleep & Stress', 'Sodium & BP', 'Exercise & HR', 'Water & BP'],
-                    datasets: [{
-                        label: 'Correlation Strength',
-                        data: [-0.75, -0.68, 0.72, -0.65, -0.45],
-                        backgroundColor: [
-                            '#3b82f6',
-                            '#10b981',
-                            '#ef4444',
-                            '#8b5cf6',
-                            '#6366f1'
-                        ],
-                        borderRadius: 5
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const value = context.raw;
-                                    const label = value < 0 ? 'Negative correlation: ' : 'Positive correlation: ';
-                                    return label + Math.abs(value).toFixed(2);
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                color: colors.correlation.gridColor
-                            },
-                            ticks: {
-                                color: colors.correlation.textColor,
-                                callback: function(value) {
-                                    return value.toFixed(1);
-                                }
-                            },
-                            min: -1,
-                            max: 1
-                        },
-                        y: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: colors.correlation.textColor
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // Update chart data based on selected date range
-        function updateChartDataByRange(range) {
-            // Sample data for different time ranges
-            const bloodSugarData = {
-                '7': [96, 94, 92, 93, 91, 90, 92],
-                '30': [98, 95, 92, 90],
-                '90': [102, 98, 95, 92, 90, 91],
-                '180': [105, 102, 98, 95, 92, 90]
-            };
-            
-            const bloodPressureData = {
-                '7': {
-                    systolic: [122, 123, 124, 125, 126, 127, 128],
-                    diastolic: [80, 81, 81, 82, 82, 83, 84]
-                },
-                '30': {
-                    systolic: [120, 122, 125, 128],
-                    diastolic: [80, 81, 82, 84]
-                },
-                '90': {
-                    systolic: [118, 120, 122, 125, 128, 127],
-                    diastolic: [78, 80, 81, 82, 84, 83]
-                },
-                '180': {
-                    systolic: [115, 118, 120, 122, 125, 128],
-                    diastolic: [75, 78, 80, 81, 82, 84]
-                }
-            };
-            
-            const heartRateData = {
-                '7': [70, 69, 69, 68, 68, 67, 68],
-                '30': [72, 70, 69, 68],
-                '90': [75, 72, 70, 69, 68, 67],
-                '180': [78, 75, 72, 70, 69, 68]
-            };
-            
-            const sleepQualityData = {
-                '7': [6.5, 6.4, 6.3, 6.2, 6.1, 6.0, 6.2],
-                '30': [7.5, 7.0, 6.5, 6.2],
-                '90': [8.0, 7.5, 7.0, 6.5, 6.2, 6.0],
-                '180': [8.5, 8.0, 7.5, 7.0, 6.5, 6.2]
-            };
-            
-            // Update labels based on range
-            let labels = [];
-            if (range === '7') {
-                labels = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'];
-            } else if (range === '30') {
-                labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-            } else if (range === '90') {
-                labels = ['Month 1', 'Month 1.5', 'Month 2', 'Month 2.5', 'Month 3', 'Recent'];
-            } else if (range === '180') {
-                labels = ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'];
-            }
-            
-            // Update Blood Sugar Chart
-            chartConfigs.bloodSugarTrend.data.labels = labels;
-            chartConfigs.bloodSugarTrend.data.datasets[0].data = bloodSugarData[range];
-            chartConfigs.bloodSugarTrend.update();
-            
-            // Update Blood Pressure Chart
-            chartConfigs.bloodPressureTrend.data.labels = labels;
-            chartConfigs.bloodPressureTrend.data.datasets[0].data = bloodPressureData[range].systolic;
-            chartConfigs.bloodPressureTrend.data.datasets[1].data = bloodPressureData[range].diastolic;
-            chartConfigs.bloodPressureTrend.update();
-            
-            // Update Heart Rate Chart
-            chartConfigs.heartRateTrend.data.labels = labels;
-            chartConfigs.heartRateTrend.data.datasets[0].data = heartRateData[range];
-            chartConfigs.heartRateTrend.update();
-            
-            // Update Sleep Quality Chart
-            chartConfigs.sleepQualityTrend.data.labels = labels;
-            chartConfigs.sleepQualityTrend.data.datasets[0].data = sleepQualityData[range];
-            chartConfigs.sleepQualityTrend.update();
-            
-            // Update correlation data based on range (simplified for demo)
-            if (range === '7') {
-                chartConfigs.correlation.data.datasets[0].data = [-0.65, -0.58, 0.62, -0.55, -0.35];
-            } else if (range === '30') {
-                chartConfigs.correlation.data.datasets[0].data = [-0.75, -0.68, 0.72, -0.65, -0.45];
-            } else if (range === '90') {
-                chartConfigs.correlation.data.datasets[0].data = [-0.78, -0.72, 0.75, -0.68, -0.52];
-            } else if (range === '180') {
-                chartConfigs.correlation.data.datasets[0].data = [-0.82, -0.75, 0.78, -0.72, -0.58];
-            }
-            chartConfigs.correlation.update();
-        }
-        
-        // Update chart colors when theme changes
-        function updateChartColors(isDark) {
-            const colors = getChartColors(isDark);
-            
-            // Update Blood Sugar Trend Chart
-            chartConfigs.bloodSugarTrend.data.datasets[0].borderColor = colors.bloodSugar.borderColor;
-            chartConfigs.bloodSugarTrend.data.datasets[0].backgroundColor = colors.bloodSugar.backgroundColor;
-            chartConfigs.bloodSugarTrend.options.scales.y.grid.color = colors.bloodSugar.gridColor;
-            chartConfigs.bloodSugarTrend.options.scales.x.ticks.color = colors.bloodSugar.textColor;
-            chartConfigs.bloodSugarTrend.options.scales.y.ticks.color = colors.bloodSugar.textColor;
-            chartConfigs.bloodSugarTrend.update();
-            
-            // Update Blood Pressure Trend Chart
-            chartConfigs.bloodPressureTrend.data.datasets[0].borderColor = colors.bloodPressure.borderColor;
-            chartConfigs.bloodPressureTrend.data.datasets[1].borderColor = 'rgba(239, 68, 68, 0.6)';
-            chartConfigs.bloodPressureTrend.data.datasets[1].backgroundColor = colors.bloodPressure.backgroundColor;
-            chartConfigs.bloodPressureTrend.options.scales.y.grid.color = colors.bloodPressure.gridColor;
-            chartConfigs.bloodPressureTrend.options.scales.x.ticks.color = colors.bloodPressure.textColor;
-            chartConfigs.bloodPressureTrend.options.scales.y.ticks.color = colors.bloodPressure.textColor;
-            chartConfigs.bloodPressureTrend.update();
-            
-            // Update Heart Rate Trend Chart
-            chartConfigs.heartRateTrend.data.datasets[0].borderColor = colors.heartRate.borderColor;
-            chartConfigs.heartRateTrend.data.datasets[0].backgroundColor = colors.heartRate.backgroundColor;
-            chartConfigs.heartRateTrend.options.scales.y.grid.color = colors.heartRate.gridColor;
-            chartConfigs.heartRateTrend.options.scales.x.ticks.color = colors.heartRate.textColor;
-            chartConfigs.heartRateTrend.options.scales.y.ticks.color = colors.heartRate.textColor;
-            chartConfigs.heartRateTrend.update();
-            
-            // Update Sleep Quality Trend Chart
-            chartConfigs.sleepQualityTrend.data.datasets[0].borderColor = colors.sleepQuality.borderColor;
-            chartConfigs.sleepQualityTrend.data.datasets[0].backgroundColor = colors.sleepQuality.backgroundColor;
-            chartConfigs.sleepQualityTrend.options.scales.y.grid.color = colors.sleepQuality.gridColor;
-            chartConfigs.sleepQualityTrend.options.scales.x.ticks.color = colors.sleepQuality.textColor;
-            chartConfigs.sleepQualityTrend.options.scales.y.ticks.color = colors.sleepQuality.textColor;
-            chartConfigs.sleepQualityTrend.update();
-            
-            // Update Correlation Chart
-            chartConfigs.correlation.options.scales.x.grid.color = colors.correlation.gridColor;
-            chartConfigs.correlation.options.scales.x.ticks.color = colors.correlation.textColor;
-            chartConfigs.correlation.options.scales.y.ticks.color = colors.correlation.textColor;
-            chartConfigs.correlation.update();
-        }
-        
-        // Initialize charts when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            initCharts();
-        });
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'95109ff2e1f8a75f',t:'MTc1MDE0MzE1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
 
-</body></html>
+        // Accordion functionality
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const content = document.getElementById(targetId);
+
+                // Toggle the content
+                if (content.classList.contains('open')) {
+                    content.classList.remove('open');
+                    this.classList.remove('open');
+                } else {
+                    content.classList.add('open');
+                    this.classList.add('open');
+                }
+            });
+        });
+
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab');
+        const cards = document.querySelectorAll('.card');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function () {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+
+                // Add active class to clicked tab
+                this.classList.add('active');
+
+                const tabType = this.getAttribute('data-tab');
+
+                // Show/hide cards based on tab
+                if (tabType === 'all') {
+                    cards.forEach(card => card.style.display = 'block');
+                } else {
+                    cards.forEach(card => {
+                        if (card.id === `${tabType}-card`) {
+                            card.style.display = 'block';
+
+                            // Auto-open the accordion when filtering
+                            const content = document.getElementById(`${tabType}-content`);
+                            const header = card.querySelector('.accordion-header');
+
+                            if (!content.classList.contains('open')) {
+                                content.classList.add('open');
+                                header.classList.add('open');
+                            }
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+
+        // Modal functionality
+        const reportModal = document.getElementById('report-modal');
+        const closeModal = document.getElementById('close-modal');
+        const reportButtons = document.querySelectorAll('.view-report-btn');
+        const reportTitle = document.getElementById('report-title');
+        const reportContent = document.getElementById('report-content');
+
+        reportButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const reportType = this.getAttribute('data-report');
+
+                // Set modal title based on report type
+                switch (reportType) {
+                    case 'fbs-report':
+                        reportTitle.textContent = 'Blood Sugar (FBS) Report';
+                        break;
+                    case 'bp-report':
+                        reportTitle.textContent = 'Blood Pressure (BP) Report';
+                        break;
+                    case 'hr-report':
+                        reportTitle.textContent = 'Heart Rate (HR) Report';
+                        break;
+                    case 'spo2-report':
+                        reportTitle.textContent = 'Oxygen Saturation (SPO2) Report';
+                        break;
+                    case 'cholesterol-report':
+                        reportTitle.textContent = 'Cholesterol Report';
+                        break;
+                    default:
+                        reportTitle.textContent = 'Health Report';
+                }
+
+                // Generate sample report content
+                generateReportContent(reportType);
+
+                // Show modal
+                reportModal.classList.add('open');
+            });
+        });
+
+        closeModal.addEventListener('click', function () {
+            reportModal.classList.remove('open');
+        });
+
+        // Close modal when clicking outside
+        reportModal.addEventListener('click', function (e) {
+            if (e.target === reportModal) {
+                reportModal.classList.remove('open');
+            }
+        });
+
+        // Generate sample report content
+        function generateReportContent(reportType) {
+            let content = '';
+
+            // Common report header
+            content += `
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h4 class="font-medium text-gray-800 dark:text-white">Patient: John Doe</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">ID: 12345678</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Date: ${new Date().toLocaleDateString()}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Time: ${new Date().toLocaleTimeString()}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Report specific content
+            switch (reportType) {
+                case 'fbs-report':
+                    content += `
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Test Type:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">Fasting Blood Sugar</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Result:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">95 mg/dL</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Normal Range:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">70-100 mg/dL</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Status:</span>
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs">Normal</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Normalized Value:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">83.3 / 100</span>
+                            </div>
+                            <div class="pt-2">
+                                <span class="text-gray-700 dark:text-gray-300">Notes:</span>
+                                <p class="mt-1 text-gray-600 dark:text-gray-400 text-sm">
+                                    Patient's fasting blood sugar levels are within normal range. Continue with current diet and exercise regimen.
+                                </p>
+                            </div>
+                            <div class="flex items-center pt-2">
+                                <div class="data-source-tag tag-me">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                    <span>Added by Me</span>
+                                </div>
+                                <div class="data-source-tag tag-pathologist ml-2">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                    <span>Edited by Dr. Smith</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'bp-report':
+                    content += `
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Test Type:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">Blood Pressure</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Result:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">120/80 mmHg</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Normal Range:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">90-120/60-80 mmHg</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Status:</span>
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs">Normal</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Normalized Value:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">Systolic: 90.0 / 100, Diastolic: 85.0 / 100</span>
+                            </div>
+                            <div class="pt-2">
+                                <span class="text-gray-700 dark:text-gray-300">Notes:</span>
+                                <p class="mt-1 text-gray-600 dark:text-gray-400 text-sm">
+                                    Blood pressure is at the upper limit of normal range. Recommend continued monitoring and maintaining healthy lifestyle.
+                                </p>
+                            </div>
+                                                        <div class="flex items-center pt-2">
+                                <div class="data-source-tag tag-me">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                        </path>
+                                    </svg>
+                                    <span>Added by Me</span>
+                                </div>
+                                <div class="data-source-tag tag-pathologist ml-2">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                        </path>
+                                    </svg>
+                                    <span>Edited by Dr. Sharma</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'hr-report':
+                    content += `
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Test Type:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">Heart Rate</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Result:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">72 bpm</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Normal Range:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">60-100 bpm</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Status:</span>
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs">Normal</span>
+                            </div>
+                            <div class="pt-2">
+                                <span class="text-gray-700 dark:text-gray-300">Notes:</span>
+                                <p class="mt-1 text-gray-600 dark:text-gray-400 text-sm">
+                                    Heart rate is within the normal range. No immediate action needed.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'spo2-report':
+                    content += `
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Test Type:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">Oxygen Saturation</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Result:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">98%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Normal Range:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">95-100%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Status:</span>
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs">Excellent</span>
+                            </div>
+                            <div class="pt-2">
+                                <span class="text-gray-700 dark:text-gray-300">Notes:</span>
+                                <p class="mt-1 text-gray-600 dark:text-gray-400 text-sm">
+                                    Oxygen levels are optimal. No concerns at this time.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'cholesterol-report':
+                    content += `
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Test Type:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">Cholesterol</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Result:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">180 mg/dL</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Normal Range:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">&lt; 200 mg/dL</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-700 dark:text-gray-300">Status:</span>
+                                <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs">Normal</span>
+                            </div>
+                            <div class="pt-2">
+                                <span class="text-gray-700 dark:text-gray-300">Notes:</span>
+                                <p class="mt-1 text-gray-600 dark:text-gray-400 text-sm">
+                                    Cholesterol levels are within the safe range. Continue a heart-healthy diet and regular exercise.
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                default:
+                    content += `
+                        <div class="text-gray-700 dark:text-gray-300">
+                            No detailed report is available for this test type.
+                        </div>
+                    `;
+            }
+
+            reportContent.innerHTML = content;
+        }
+
+                            
+    </script>
+
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'950cc23477847a0d',t:'MTc1MDEwMjYxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
+
