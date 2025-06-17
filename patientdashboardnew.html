@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en" class=""><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLink - Health Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#007BFF',
+                            dark: '#3b82f6'
+                        },
+                        secondary: {
+                            DEFAULT: '#20C997',
+                            dark: '#10b981'
+                        }
+                    },
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: contain;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .animate-pulse-slow {
+            animation: pulse 2s infinite;
+        }
+        
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+        
+        /* Glassmorphism */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+        
+        .dark .glassmorphism {
+            background: rgba(17, 25, 40, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Card hover effect */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark .card:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        /* Theme switch */
+        .theme-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        .slider:after {
+            content: '☀️';
+            position: absolute;
+            left: 8px;
+            top: 5px;
+            font-size: 12px;
+        }
+        
+        input:checked + .slider:after {
+            content: '🌙';
+            left: auto;
+            right: 8px;
+        }
+        
+        /* Button ripple effect */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ripple:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+        
+        .ripple:active:after {
+            transform: scale(0, 0);
+            opacity: .3;
+            transition: 0s;
+        }
+        
+        /* Tab styles */
+        .tab-active {
+            color: #007BFF;
+            border-bottom: 2px solid #007BFF;
+        }
+        
+        .dark .tab-active {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+        }
+        
+        /* Health metric card */
+        .metric-card {
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:active {
+            transform: scale(0.98);
+        }
+        
+        /* Progress ring */
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring__circle {
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 251.2;
+            transition: stroke-dashoffset 1s ease;
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0px}.bottom-0{bottom:0px}.left-0{left:0px}.right-0{right:0px}.top-0{top:0px}.z-40{z-index:40}.mx-auto{margin-left:auto;margin-right:auto}.mb-2{margin-bottom:0.5rem}.mb-20{margin-bottom:5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.ml-4{margin-left:1rem}.ml-6{margin-left:1.5rem}.mr-1{margin-right:0.25rem}.mr-2{margin-right:0.5rem}.mr-3{margin-right:0.75rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.h-10{height:2.5rem}.h-12{height:3rem}.h-16{height:4rem}.h-2{height:0.5rem}.h-24{height:6rem}.h-3{height:0.75rem}.h-4{height:1rem}.h-40{height:10rem}.h-6{height:1.5rem}.h-8{height:2rem}.min-h-screen{min-height:100vh}.w-10{width:2.5rem}.w-12{width:3rem}.w-16{width:4rem}.w-2{width:0.5rem}.w-24{width:6rem}.w-3{width:0.75rem}.w-4{width:1rem}.w-6{width:1.5rem}.w-8{width:2rem}.w-full{width:100%}.flex-1{flex:1 1 0%}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.justify-around{justify-content:space-around}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.space-x-2 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.5rem * var(--tw-space-x-reverse));margin-left:calc(0.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-x-4 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1rem * var(--tw-space-x-reverse));margin-left:calc(1rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.bg-blue-100{--tw-bg-opacity:1;background-color:rgb(219 234 254 / var(--tw-bg-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-blue-500{--tw-bg-opacity:1;background-color:rgb(59 130 246 / var(--tw-bg-opacity, 1))}.bg-green-100{--tw-bg-opacity:1;background-color:rgb(220 252 231 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94 / var(--tw-bg-opacity, 1))}.bg-indigo-100{--tw-bg-opacity:1;background-color:rgb(224 231 255 / var(--tw-bg-opacity, 1))}.bg-pink-100{--tw-bg-opacity:1;background-color:rgb(252 231 243 / var(--tw-bg-opacity, 1))}.bg-primary{--tw-bg-opacity:1;background-color:rgb(0 123 255 / var(--tw-bg-opacity, 1))}.bg-purple-100{--tw-bg-opacity:1;background-color:rgb(243 232 255 / var(--tw-bg-opacity, 1))}.bg-purple-50{--tw-bg-opacity:1;background-color:rgb(250 245 255 / var(--tw-bg-opacity, 1))}.bg-red-100{--tw-bg-opacity:1;background-color:rgb(254 226 226 / var(--tw-bg-opacity, 1))}.bg-red-50{--tw-bg-opacity:1;background-color:rgb(254 242 242 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-yellow-500{--tw-bg-opacity:1;background-color:rgb(234 179 8 / var(--tw-bg-opacity, 1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-blue-50{--tw-gradient-from:#eff6ff var(--tw-gradient-from-position);--tw-gradient-to:rgb(239 246 255 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-blue-400{--tw-gradient-from:#60a5fa var(--tw-gradient-from-position);--tw-gradient-to:rgb(96 165 250 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-teal-50{--tw-gradient-to:#f0fdfa var(--tw-gradient-to-position)}.to-teal-400{--tw-gradient-to:#2dd4bf var(--tw-gradient-to-position)}.p-3{padding:0.75rem}.p-4{padding:1rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-20{padding-bottom:5rem}.text-center{text-align:center}.text-2xl{font-size:1.5rem;line-height:2rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-gray-200{--tw-text-opacity:1;color:rgb(229 231 235 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-green-500{--tw-text-opacity:1;color:rgb(34 197 94 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-primary{--tw-text-opacity:1;color:rgb(0 123 255 / var(--tw-text-opacity, 1))}.text-purple-500{--tw-text-opacity:1;color:rgb(168 85 247 / var(--tw-text-opacity, 1))}.text-red-800{--tw-text-opacity:1;color:rgb(153 27 27 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.dark\:border-gray-600:is(.dark *){--tw-border-opacity:1;border-color:rgb(75 85 99 / var(--tw-border-opacity, 1))}.dark\:bg-blue-800:is(.dark *){--tw-bg-opacity:1;background-color:rgb(30 64 175 / var(--tw-bg-opacity, 1))}.dark\:bg-blue-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(30 58 138 / var(--tw-bg-opacity, 1))}.dark\:bg-blue-900\/20:is(.dark *){background-color:rgb(30 58 138 / 0.2)}.dark\:bg-gray-700:is(.dark *){--tw-bg-opacity:1;background-color:rgb(55 65 81 / var(--tw-bg-opacity, 1))}.dark\:bg-gray-800:is(.dark *){--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity, 1))}.dark\:bg-green-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(20 83 45 / var(--tw-bg-opacity, 1))}.dark\:bg-green-900\/20:is(.dark *){background-color:rgb(20 83 45 / 0.2)}.dark\:bg-indigo-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(49 46 129 / var(--tw-bg-opacity, 1))}.dark\:bg-pink-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(131 24 67 / var(--tw-bg-opacity, 1))}.dark\:bg-primary-dark:is(.dark *){--tw-bg-opacity:1;background-color:rgb(59 130 246 / var(--tw-bg-opacity, 1))}.dark\:bg-purple-800:is(.dark *){--tw-bg-opacity:1;background-color:rgb(107 33 168 / var(--tw-bg-opacity, 1))}.dark\:bg-purple-900\/20:is(.dark *){background-color:rgb(88 28 135 / 0.2)}.dark\:bg-red-800:is(.dark *){--tw-bg-opacity:1;background-color:rgb(153 27 27 / var(--tw-bg-opacity, 1))}.dark\:bg-red-900:is(.dark *){--tw-bg-opacity:1;background-color:rgb(127 29 29 / var(--tw-bg-opacity, 1))}.dark\:bg-red-900\/20:is(.dark *){background-color:rgb(127 29 29 / 0.2)}.dark\:from-gray-900:is(.dark *){--tw-gradient-from:#111827 var(--tw-gradient-from-position);--tw-gradient-to:rgb(17 24 39 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.dark\:to-gray-800:is(.dark *){--tw-gradient-to:#1f2937 var(--tw-gradient-to-position)}.dark\:text-blue-400:is(.dark *){--tw-text-opacity:1;color:rgb(96 165 250 / var(--tw-text-opacity, 1))}.dark\:text-gray-300:is(.dark *){--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.dark\:text-gray-400:is(.dark *){--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.dark\:text-gray-700:is(.dark *){--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.dark\:text-green-200:is(.dark *){--tw-text-opacity:1;color:rgb(187 247 208 / var(--tw-text-opacity, 1))}.dark\:text-green-400:is(.dark *){--tw-text-opacity:1;color:rgb(74 222 128 / var(--tw-text-opacity, 1))}.dark\:text-primary-dark:is(.dark *){--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.dark\:text-purple-400:is(.dark *){--tw-text-opacity:1;color:rgb(192 132 252 / var(--tw-text-opacity, 1))}.dark\:text-red-200:is(.dark *){--tw-text-opacity:1;color:rgb(254 202 202 / var(--tw-text-opacity, 1))}.dark\:text-white:is(.dark *){--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}</style></head>
+<body class="bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300 min-h-screen pb-20">
+    
+
+    <!-- Header -->
+    <header class="sticky top-0 w-full bg-white dark:bg-gray-800 shadow-md z-40 transition-colors duration-300">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="text-lg font-medium text-gray-800 dark:text-white">📊 Health Dashboard</h1>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <label class="theme-switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <!-- User Profile Summary -->
+    <div class="container mx-auto px-4 py-4">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-4 glassmorphism animate-fadeIn">
+            <div class="flex items-center">
+                <div class="w-16 h-16 rounded-full bg-gradient-to-r from-blue-400 to-teal-400 flex items-center justify-center text-white text-xl font-bold">
+                    RS
+                </div>
+                <div class="ml-4">
+                    <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Rahul Sharma</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">32 years • Male • A+ Blood</p>
+                    <div class="flex items-center mt-1">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Premium Member
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Health Score -->
+    <div class="container mx-auto px-4 py-2">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-4 glassmorphism animate-fadeIn stagger-1">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-md font-semibold text-gray-800 dark:text-white">Your Health Score</h3>
+                <button class="text-primary dark:text-primary-dark text-sm font-medium">Details</button>
+            </div>
+            <div class="flex items-center justify-between">
+                <div class="relative w-24 h-24">
+                    <svg class="progress-ring" width="100" height="100">
+                        <circle class="text-gray-200 dark:text-gray-700" stroke="currentColor" stroke-width="8" fill="transparent" r="40" cx="50" cy="50"></circle>
+                        <circle class="progress-ring__circle text-green-500" stroke="currentColor" stroke-width="8" fill="transparent" r="40" cx="50" cy="50" style="stroke-dashoffset: 45.2389; stroke-dasharray: 251.327, 251.327;"></circle>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-2xl font-bold text-gray-800 dark:text-white">82</span>
+                    </div>
+                </div>
+                <div class="flex-1 ml-6">
+                    <div class="flex items-center mb-2">
+                        <div class="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                        <span class="text-sm text-gray-600 dark:text-gray-300">Good overall health</span>
+                    </div>
+                    <div class="flex items-center mb-2">
+                        <div class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></div>
+                        <span class="text-sm text-gray-600 dark:text-gray-300">Improve sleep quality</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
+                        <span class="text-sm text-gray-600 dark:text-gray-300">Increase daily steps</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Health Metrics -->
+    <div class="container mx-auto px-4 py-2">
+        <div class="flex justify-between items-center mb-2">
+            <h3 class="text-md font-semibold text-gray-800 dark:text-white">Health Metrics</h3>
+            <div class="flex space-x-2">
+                <button class="tab-btn tab-active px-2 py-1 text-sm" data-tab="daily">Daily</button>
+                <button class="tab-btn px-2 py-1 text-sm text-gray-500 dark:text-gray-400" data-tab="weekly">Weekly</button>
+                <button class="tab-btn px-2 py-1 text-sm text-gray-500 dark:text-gray-400" data-tab="monthly">Monthly</button>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3">
+            <!-- Blood Sugar -->
+            <div class="metric-card bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 glassmorphism animate-fadeIn stagger-1">
+                <div class="flex items-center mb-2">
+                    <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-2">
+                        <span class="text-lg">🩸</span>
+                    </div>
+                    <h4 class="text-sm font-medium text-gray-800 dark:text-white">Blood Sugar</h4>
+                </div>
+                <div class="h-24">
+                    <canvas id="bloodSugarChart" width="140" height="96" style="display: block; box-sizing: border-box; height: 96px; width: 140px;"></canvas>
+                </div>
+                <div class="mt-2 flex justify-between items-center">
+                    <span class="text-xs text-gray-500 dark:text-gray-400">Last: 95 mg/dL</span>
+                    <span class="text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Normal</span>
+                </div>
+            </div>
+            
+            <!-- Blood Pressure -->
+            <div class="metric-card bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 glassmorphism animate-fadeIn stagger-2">
+                <div class="flex items-center mb-2">
+                    <div class="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center mr-2">
+                        <span class="text-lg">❤️</span>
+                    </div>
+                    <h4 class="text-sm font-medium text-gray-800 dark:text-white">Blood Pressure</h4>
+                </div>
+                <div class="h-24">
+                    <canvas id="bloodPressureChart" width="140" height="96" style="display: block; box-sizing: border-box; height: 96px; width: 140px;"></canvas>
+                </div>
+                <div class="mt-2 flex justify-between items-center">
+                    <span class="text-xs text-gray-500 dark:text-gray-400">Last: 120/80 mmHg</span>
+                    <span class="text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Normal</span>
+                </div>
+            </div>
+            
+            <!-- Heart Rate -->
+            <div class="metric-card bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 glassmorphism animate-fadeIn stagger-3">
+                <div class="flex items-center mb-2">
+                    <div class="w-8 h-8 rounded-full bg-pink-100 dark:bg-pink-900 flex items-center justify-center mr-2">
+                        <span class="text-lg">💓</span>
+                    </div>
+                    <h4 class="text-sm font-medium text-gray-800 dark:text-white">Heart Rate</h4>
+                </div>
+                <div class="h-24">
+                    <canvas id="heartRateChart" width="140" height="96" style="display: block; box-sizing: border-box; height: 96px; width: 140px;"></canvas>
+                </div>
+                <div class="mt-2 flex justify-between items-center">
+                    <span class="text-xs text-gray-500 dark:text-gray-400">Last: 72 bpm</span>
+                    <span class="text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Normal</span>
+                </div>
+            </div>
+            
+            <!-- SPO2 -->
+            <div class="metric-card bg-white dark:bg-gray-800 rounded-xl shadow-md p-3 glassmorphism animate-fadeIn stagger-4">
+                <div class="flex items-center mb-2">
+                    <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center mr-2">
+                        <span class="text-lg">🌬</span>
+                    </div>
+                    <h4 class="text-sm font-medium text-gray-800 dark:text-white">SPO2</h4>
+                </div>
+                <div class="h-24">
+                    <canvas id="spo2Chart" width="140" height="96" style="display: block; box-sizing: border-box; height: 96px; width: 140px;"></canvas>
+                </div>
+                <div class="mt-2 flex justify-between items-center">
+                    <span class="text-xs text-gray-500 dark:text-gray-400">Last: 98%</span>
+                    <span class="text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full">Normal</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Summary -->
+    <div class="container mx-auto px-4 py-2">
+        <h3 class="text-md font-semibold text-gray-800 dark:text-white mb-2">Activity Summary</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-4 glassmorphism animate-fadeIn stagger-2">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h4 class="text-sm font-medium text-gray-800 dark:text-white">Today's Activity</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">June 15, 2025</p>
+                </div>
+                <button class="text-primary dark:text-primary-dark text-sm font-medium">Details</button>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-2 mb-4">
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-center">
+                    <div class="text-blue-500 dark:text-blue-400 text-lg font-semibold">7,245</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">Steps</div>
+                </div>
+                <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 text-center">
+                    <div class="text-green-500 dark:text-green-400 text-lg font-semibold">3.2</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">km</div>
+                </div>
+                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 text-center">
+                    <div class="text-purple-500 dark:text-purple-400 text-lg font-semibold">284</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">kcal</div>
+                </div>
+            </div>
+            
+            <div class="h-40">
+                <canvas id="activityChart" width="310" height="160" style="display: block; box-sizing: border-box; height: 160px; width: 310px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medication Reminder -->
+    <div class="container mx-auto px-4 py-2">
+        <h3 class="text-md font-semibold text-gray-800 dark:text-white mb-2">Medication Reminder</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-4 glassmorphism animate-fadeIn stagger-3">
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="text-sm font-medium text-gray-800 dark:text-white">Today's Medications</h4>
+                <button class="text-primary dark:text-primary-dark text-sm font-medium">Add New</button>
+            </div>
+            
+            <div class="space-y-3">
+                <div class="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-800 flex items-center justify-center mr-3">
+                            <span class="text-lg">💊</span>
+                        </div>
+                        <div>
+                            <h5 class="text-sm font-medium text-gray-800 dark:text-white">Metformin</h5>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">500mg • After breakfast</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-xs px-2 py-0.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full mr-2">Taken</span>
+                        <button class="w-6 h-6 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-800 flex items-center justify-center mr-3">
+                            <span class="text-lg">💊</span>
+                        </div>
+                        <div>
+                            <h5 class="text-sm font-medium text-gray-800 dark:text-white">Lisinopril</h5>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">10mg • Before dinner</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-xs px-2 py-0.5 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full mr-2">Due 7:00 PM</span>
+                        <button class="w-6 h-6 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Appointments -->
+    <div class="container mx-auto px-4 py-2 mb-20">
+        <h3 class="text-md font-semibold text-gray-800 dark:text-white mb-2">Upcoming Appointments</h3>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-4 glassmorphism animate-fadeIn stagger-4">
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="text-sm font-medium text-gray-800 dark:text-white">Next Visit</h4>
+                <button class="text-primary dark:text-primary-dark text-sm font-medium">View All</button>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg mb-3">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-800 flex items-center justify-center mr-3">
+                        <span class="text-lg">👨‍⚕️</span>
+                    </div>
+                    <div>
+                        <h5 class="text-sm font-medium text-gray-800 dark:text-white">Dr. Vikram Patel</h5>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Cardiologist</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">June 18, 2025 • 10:30 AM</p>
+                    </div>
+                </div>
+                <div>
+                    <button class="px-3 py-1.5 bg-primary dark:bg-primary-dark text-white rounded-lg text-sm font-medium flex items-center ripple">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Reschedule
+                    </button>
+                </div>
+            </div>
+            
+            <button class="w-full py-2 px-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium flex items-center justify-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Book New Appointment
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg flex justify-around items-center py-2 px-4 transition-colors duration-300">
+        <a href="#" class="nav-item flex flex-col items-center text-primary dark:text-primary-dark">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+            <span class="text-xs mt-1">Home</span>
+        </a>
+        <a href="#" class="nav-item flex flex-col items-center text-gray-500 dark:text-gray-400">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <span class="text-xs mt-1">Records</span>
+        </a>
+        <a href="#" class="nav-item flex flex-col items-center text-gray-500 dark:text-gray-400">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+            <span class="text-xs mt-1">Analysis</span>
+        </a>
+        <a href="#" class="nav-item flex flex-col items-center text-gray-500 dark:text-gray-400">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+            </svg>
+            <span class="text-xs mt-1">Notifications</span>
+        </a>
+    </nav>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        // Check for saved theme preference or use system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeToggle.checked = true;
+        } else {
+            html.classList.remove('dark');
+            themeToggle.checked = false;
+        }
+        
+        // Toggle theme when switch is clicked
+        themeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+                updateChartColors(true);
+            } else {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+                updateChartColors(false);
+            }
+        });
+        
+        // Tab functionality
+        document.querySelectorAll('.tab-btn').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab-btn').forEach(t => {
+                    t.classList.remove('tab-active');
+                    t.classList.add('text-gray-500', 'dark:text-gray-400');
+                });
+                
+                // Add active class to clicked tab
+                this.classList.add('tab-active');
+                this.classList.remove('text-gray-500', 'dark:text-gray-400');
+                
+                // Update chart data based on selected tab
+                const tabName = this.getAttribute('data-tab');
+                updateChartData(tabName);
+            });
+        });
+        
+        // Chart configurations
+        let isDarkMode = html.classList.contains('dark');
+        let chartConfigs = {};
+        
+        // Function to get chart colors based on theme
+        function getChartColors(isDark) {
+            return {
+                bloodSugar: {
+                    borderColor: isDark ? '#3b82f6' : '#3b82f6',
+                    backgroundColor: isDark ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.2)',
+                    gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+                    textColor: isDark ? '#9ca3af' : '#6b7280'
+                },
+                bloodPressure: {
+                    borderColor: isDark ? '#ef4444' : '#ef4444',
+                    backgroundColor: isDark ? 'rgba(239, 68, 68, 0.2)' : 'rgba(239, 68, 68, 0.2)',
+                    gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+                    textColor: isDark ? '#9ca3af' : '#6b7280'
+                },
+                heartRate: {
+                    borderColor: isDark ? '#ec4899' : '#ec4899',
+                    backgroundColor: isDark ? 'rgba(236, 72, 153, 0.2)' : 'rgba(236, 72, 153, 0.2)',
+                    gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+                    textColor: isDark ? '#9ca3af' : '#6b7280'
+                },
+                spo2: {
+                    borderColor: isDark ? '#6366f1' : '#6366f1',
+                    backgroundColor: isDark ? 'rgba(99, 102, 241, 0.2)' : 'rgba(99, 102, 241, 0.2)',
+                    gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+                    textColor: isDark ? '#9ca3af' : '#6b7280'
+                },
+                activity: {
+                    borderColor: isDark ? '#10b981' : '#10b981',
+                    backgroundColor: isDark ? 'rgba(16, 185, 129, 0.2)' : 'rgba(16, 185, 129, 0.2)',
+                    gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+                    textColor: isDark ? '#9ca3af' : '#6b7280'
+                }
+            };
+        }
+        
+        // Initialize charts
+        function initCharts() {
+            const colors = getChartColors(isDarkMode);
+            
+            // Blood Sugar Chart
+            const bloodSugarCtx = document.getElementById('bloodSugarChart').getContext('2d');
+            chartConfigs.bloodSugar = new Chart(bloodSugarCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Blood Sugar',
+                        data: [92, 88, 95, 90, 85, 93, 95],
+                        borderColor: colors.bloodSugar.borderColor,
+                        backgroundColor: colors.bloodSugar.backgroundColor,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            display: false,
+                            min: 70,
+                            max: 120
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 0
+                        }
+                    }
+                }
+            });
+            
+            // Blood Pressure Chart
+            const bloodPressureCtx = document.getElementById('bloodPressureChart').getContext('2d');
+            chartConfigs.bloodPressure = new Chart(bloodPressureCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Systolic',
+                        data: [120, 118, 122, 119, 121, 120, 120],
+                        borderColor: colors.bloodPressure.borderColor,
+                        backgroundColor: 'transparent',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Diastolic',
+                        data: [80, 78, 82, 79, 81, 80, 80],
+                        borderColor: colors.bloodPressure.borderColor,
+                        backgroundColor: colors.bloodPressure.backgroundColor,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            display: false,
+                            min: 60,
+                            max: 140
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 0
+                        }
+                    }
+                }
+            });
+            
+            // Heart Rate Chart
+            const heartRateCtx = document.getElementById('heartRateChart').getContext('2d');
+            chartConfigs.heartRate = new Chart(heartRateCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Heart Rate',
+                        data: [72, 75, 70, 74, 76, 73, 72],
+                        borderColor: colors.heartRate.borderColor,
+                        backgroundColor: colors.heartRate.backgroundColor,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            display: false,
+                            min: 60,
+                            max: 90
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 0
+                        }
+                    }
+                }
+            });
+            
+            // SPO2 Chart
+            const spo2Ctx = document.getElementById('spo2Chart').getContext('2d');
+            chartConfigs.spo2 = new Chart(spo2Ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'SPO2',
+                        data: [98, 97, 98, 99, 98, 97, 98],
+                        borderColor: colors.spo2.borderColor,
+                        backgroundColor: colors.spo2.backgroundColor,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            display: false,
+                            min: 90,
+                            max: 100
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 0
+                        }
+                    }
+                }
+            });
+            
+            // Activity Chart
+            const activityCtx = document.getElementById('activityChart').getContext('2d');
+            chartConfigs.activity = new Chart(activityCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Steps',
+                        data: [6500, 8200, 7400, 9100, 7800, 6900, 7245],
+                        backgroundColor: colors.activity.borderColor,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: colors.activity.textColor
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: colors.activity.gridColor
+                            },
+                            ticks: {
+                                color: colors.activity.textColor,
+                                callback: function(value) {
+                                    if (value === 0) return '0';
+                                    if (value === 5000) return '5K';
+                                    if (value === 10000) return '10K';
+                                }
+                            },
+                            max: 12000
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Update chart data based on selected tab
+        function updateChartData(tabName) {
+            const bloodSugarData = {
+                daily: [92, 88, 95, 90, 85, 93, 95],
+                weekly: [94, 91, 93, 89, 92, 90, 95],
+                monthly: [90, 92, 94, 91, 89, 93, 95]
+            };
+            
+            const bloodPressureData = {
+                daily: {
+                    systolic: [120, 118, 122, 119, 121, 120, 120],
+                    diastolic: [80, 78, 82, 79, 81, 80, 80]
+                },
+                weekly: {
+                    systolic: [122, 120, 118, 121, 119, 120, 122],
+                    diastolic: [82, 80, 78, 81, 79, 80, 82]
+                },
+                monthly: {
+                    systolic: [119, 121, 120, 118, 122, 120, 119],
+                    diastolic: [79, 81, 80, 78, 82, 80, 79]
+                }
+            };
+            
+            const heartRateData = {
+                daily: [72, 75, 70, 74, 76, 73, 72],
+                weekly: [74, 72, 75, 71, 73, 76, 74],
+                monthly: [73, 75, 72, 74, 71, 73, 75]
+            };
+            
+            const spo2Data = {
+                daily: [98, 97, 98, 99, 98, 97, 98],
+                weekly: [97, 98, 99, 98, 97, 98, 99],
+                monthly: [98, 99, 97, 98, 99, 98, 97]
+            };
+            
+            const activityData = {
+                daily: [6500, 8200, 7400, 9100, 7800, 6900, 7245],
+                weekly: [45000, 52000, 48000, 50000, 47000, 49000, 51000],
+                monthly: [180000, 210000, 195000, 205000, 190000, 200000, 215000]
+            };
+            
+            // Update Blood Sugar Chart
+            chartConfigs.bloodSugar.data.datasets[0].data = bloodSugarData[tabName];
+            chartConfigs.bloodSugar.update();
+            
+            // Update Blood Pressure Chart
+            chartConfigs.bloodPressure.data.datasets[0].data = bloodPressureData[tabName].systolic;
+            chartConfigs.bloodPressure.data.datasets[1].data = bloodPressureData[tabName].diastolic;
+            chartConfigs.bloodPressure.update();
+            
+            // Update Heart Rate Chart
+            chartConfigs.heartRate.data.datasets[0].data = heartRateData[tabName];
+            chartConfigs.heartRate.update();
+            
+            // Update SPO2 Chart
+            chartConfigs.spo2.data.datasets[0].data = spo2Data[tabName];
+            chartConfigs.spo2.update();
+            
+            // Update Activity Chart
+            chartConfigs.activity.data.datasets[0].data = activityData[tabName];
+            
+            // Adjust y-axis scale for activity chart based on tab
+            if (tabName === 'daily') {
+                chartConfigs.activity.options.scales.y.max = 12000;
+                chartConfigs.activity.options.scales.y.ticks.callback = function(value) {
+                    if (value === 0) return '0';
+                    if (value === 5000) return '5K';
+                    if (value === 10000) return '10K';
+                };
+            } else if (tabName === 'weekly') {
+                chartConfigs.activity.options.scales.y.max = 60000;
+                chartConfigs.activity.options.scales.y.ticks.callback = function(value) {
+                    if (value === 0) return '0';
+                    if (value === 20000) return '20K';
+                    if (value === 40000) return '40K';
+                    if (value === 60000) return '60K';
+                };
+            } else if (tabName === 'monthly') {
+                chartConfigs.activity.options.scales.y.max = 250000;
+                chartConfigs.activity.options.scales.y.ticks.callback = function(value) {
+                    if (value === 0) return '0';
+                    if (value === 100000) return '100K';
+                    if (value === 200000) return '200K';
+                };
+            }
+            
+            chartConfigs.activity.update();
+        }
+        
+        // Update chart colors when theme changes
+        function updateChartColors(isDark) {
+            const colors = getChartColors(isDark);
+            
+            // Update Blood Sugar Chart
+            chartConfigs.bloodSugar.data.datasets[0].borderColor = colors.bloodSugar.borderColor;
+            chartConfigs.bloodSugar.data.datasets[0].backgroundColor = colors.bloodSugar.backgroundColor;
+            chartConfigs.bloodSugar.options.scales.y.grid.color = colors.bloodSugar.gridColor;
+            chartConfigs.bloodSugar.update();
+            
+            // Update Blood Pressure Chart
+            chartConfigs.bloodPressure.data.datasets[0].borderColor = colors.bloodPressure.borderColor;
+            chartConfigs.bloodPressure.data.datasets[1].borderColor = colors.bloodPressure.borderColor;
+            chartConfigs.bloodPressure.data.datasets[1].backgroundColor = colors.bloodPressure.backgroundColor;
+            chartConfigs.bloodPressure.options.scales.y.grid.color = colors.bloodPressure.gridColor;
+            chartConfigs.bloodPressure.update();
+            
+            // Update Heart Rate Chart
+            chartConfigs.heartRate.data.datasets[0].borderColor = colors.heartRate.borderColor;
+            chartConfigs.heartRate.data.datasets[0].backgroundColor = colors.heartRate.backgroundColor;
+            chartConfigs.heartRate.options.scales.y.grid.color = colors.heartRate.gridColor;
+            chartConfigs.heartRate.update();
+            
+            // Update SPO2 Chart
+            chartConfigs.spo2.data.datasets[0].borderColor = colors.spo2.borderColor;
+            chartConfigs.spo2.data.datasets[0].backgroundColor = colors.spo2.backgroundColor;
+            chartConfigs.spo2.options.scales.y.grid.color = colors.spo2.gridColor;
+            chartConfigs.spo2.update();
+            
+            // Update Activity Chart
+            chartConfigs.activity.data.datasets[0].backgroundColor = colors.activity.borderColor;
+            chartConfigs.activity.options.scales.x.ticks.color = colors.activity.textColor;
+            chartConfigs.activity.options.scales.y.ticks.color = colors.activity.textColor;
+            chartConfigs.activity.options.scales.y.grid.color = colors.activity.gridColor;
+            chartConfigs.activity.update();
+        }
+        
+        // Initialize charts when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            
+            // Set health score progress ring
+            const progressRing = document.querySelector('.progress-ring__circle');
+            const healthScore = 82;
+            const circumference = 2 * Math.PI * 40;
+            const offset = circumference - (healthScore / 100) * circumference;
+            progressRing.style.strokeDashoffset = offset;
+            progressRing.style.strokeDasharray = `${circumference} ${circumference}`;
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'950cd3656756cdc6',t:'MTc1MDEwMzMxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
+
+</body></html>
