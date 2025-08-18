@@ -44,13 +44,23 @@
 ## 👨‍💻 Author  
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/chandan-saha" target="_blank">
-    <img src="https://img.shields.io/badge/-Chandan%20Saha-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
+  <a href="https://www.instagram.com/c_h_a_n_d_a_n_0_1/" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="60" alt="Instagram" />
   </a>
-  <a href="https://github.com/cksdev" target="_blank">
-    <img src="https://img.shields.io/badge/-cksdev-181717?style=for-the-badge&logo=github&logoColor=white" />
+  &nbsp;&nbsp;
+  <a href="mailto:chandansaha1945@gmail.com">
+    <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" width="60" alt="Gmail" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://www.linkedin.com/in/chandan-saha-228560327/" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="60" alt="LinkedIn" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://x.com/chandansahaaaa?s=09" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" width="60" alt="X" />
   </a>
 </p>
+
 
 ---
 
