@@ -12,7 +12,7 @@
 ## 🚀 Live Demo  
 
 <p align="center">
-  <a href="https://chandansaha2005.github.io/LifeLink/" target="_blank">
+  <a href="https://lifelink-health.vercel.app/" target="_blank">
     <img src="https://img.shields.io/badge/LifeLink%20WebApp-Click%20Here-00C853?style=for-the-badge&logo=google-chrome&logoColor=white" alt="LifeLink Demo"/>
   </a>
 </p>
